@@ -10,51 +10,51 @@ let myPictureArray = [
     albumId: 1,
     id: 2,
     title: "鹿・Nara",
-    url: "images/img2.jpg"
+    url: "/images/img2.jpg"
   }),
   (pic3 = {
     albumId: 1,
     id: 3,
     title: "金・Nara",
-    url: "images/img3.jpg",
+    url: "/images/img3.jpg",
     rotateFlag: true
   }),
   (pic4 = {
     albumId: 1,
     id: 4,
     title: "アレクス・Kyoto",
-    url: "images/img4.jpg",
+    url: "/images/img4.jpg",
     rotateFlag: true
   }),
   (pic5 = {
     albumId: 1,
     id: 5,
     title: "ジェシ・Kyoto",
-    url: "images/img5.jpg"
+    url: "/images/img5.jpg"
   }),
   (pic6 = {
     albumId: 1,
     id: 6,
     title: "ダビド・Kyoto",
-    url: "images/img6.jpg"
+    url: "/images/img6.jpg"
   }),
   (pic7 = {
     albumId: 1,
     id: 7,
     title: "浅草・Tokyo",
-    url: "images/img7.jpg"
+    url: "/images/img7.jpg"
   }),
   (pic8 = {
     albumId: 1,
     id: 8,
     title: "家族・Tokyo",
-    url: "images/img8.jpg"
+    url: "/images/img8.jpg"
   }),
   (pic9 = {
     albumId: 1,
     id: 9,
     title: "力・Tokyo",
-    url: "images/img9.jpg",
+    url: "/images/img9.jpg",
     rotateFlag: true
   })
 ];
@@ -114,6 +114,7 @@ function displayThumbs() {
     let thumb = document.createElement("div");
     thumb.classList.add("thumb");
     thumb.style.backgroundImage = `url('${currentImage.url}')`;
+    console.log(currentImage.url);
     thumb.alt = currentImage.title;
 
     if (currentImage.rotateFlag === true) {
