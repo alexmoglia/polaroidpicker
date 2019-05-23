@@ -3,58 +3,58 @@ let myPictureArray = [
     albumId: 1,
     id: 1,
     title: "お日さま・Nara",
-    url: "images/img1.jpg",
+    url: "https://alexmoglia.github.io/polaroidpicker/images/img1.jpg",
     rotateFlag: true
   }),
   (pic2 = {
     albumId: 1,
     id: 2,
     title: "鹿・Nara",
-    url: "images/img2.jpg"
+    url: "https://alexmoglia.github.io/polaroidpicker/images/img2.jpg"
   }),
   (pic3 = {
     albumId: 1,
     id: 3,
     title: "金・Nara",
-    url: "images/img3.jpg",
+    url: "https://alexmoglia.github.io/polaroidpicker/images/img3.jpg",
     rotateFlag: true
   }),
   (pic4 = {
     albumId: 1,
     id: 4,
     title: "アレクス・Kyoto",
-    url: "images/img4.jpg",
+    url: "https://alexmoglia.github.io/polaroidpicker/images/img4.jpg",
     rotateFlag: true
   }),
   (pic5 = {
     albumId: 1,
     id: 5,
     title: "ジェシ・Kyoto",
-    url: "images/img5.jpg"
+    url: "https://alexmoglia.github.io/polaroidpicker/images/img5.jpg"
   }),
   (pic6 = {
     albumId: 1,
     id: 6,
     title: "ダビド・Kyoto",
-    url: "images/img6.jpg"
+    url: "https://alexmoglia.github.io/polaroidpicker/images/img6.jpg"
   }),
   (pic7 = {
     albumId: 1,
     id: 7,
     title: "浅草・Tokyo",
-    url: "images/img7.jpg"
+    url: "https://alexmoglia.github.io/polaroidpicker/images/img7.jpg"
   }),
   (pic8 = {
     albumId: 1,
     id: 8,
     title: "家族・Tokyo",
-    url: "images/img8.jpg"
+    url: "https://alexmoglia.github.io/polaroidpicker/images/img8.jpg"
   }),
   (pic9 = {
     albumId: 1,
     id: 9,
     title: "力・Tokyo",
-    url: "images/img9.jpg",
+    url: "https://alexmoglia.github.io/polaroidpicker/images/img9.jpg",
     rotateFlag: true
   })
 ];
