@@ -160,7 +160,7 @@ function drawImage(imgObj) {
 function drawText(alt) {
   message = alt;
   ctx.fillStyle = textColor;
-  ctx.font = `125px ${font}, cursive`;
+  ctx.font = `100px ${font}, cursive`;
   ctx.textAlign = "center";
   ctx.fillText(
     message,
