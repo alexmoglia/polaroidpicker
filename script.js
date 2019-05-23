@@ -117,13 +117,11 @@ function displayThumbs() {
     console.log(currentImage.url);
     thumb.alt = currentImage.title;
 
-    if (currentImage.rotateFlag === true) {
-      thumb.classList.add("rotate90");
-    }
     thumb.addEventListener("click", function(event) {
       canvasImage(event.target);
       document.querySelector("#text-field").value = "";
     });
+
     thumbnails.append(thumb);
   });
   firstImage = document.querySelector("div section div");
@@ -133,77 +131,40 @@ function displayThumbs() {
 
 function canvasImage(div) {
   let imgObj = new Image();
-  let scaleValue = 0.5;
   currentImage = div; // for use in Control functions
   imgObj.src = div.style.backgroundImage.slice(5, -2); // strips url("  ")
   imgObj.onload = function() {
     ctx.clearRect(0, 0, width, height);
     ctx.save();
-    if (div.classList.contains("rotate90")) {
-      drawRotatedImage(imgObj, scaleValue);
-      ctx.rotate((-90 * Math.PI) / 180); // restores rotation for text drawing
-    } else {
-      drawImage(imgObj, scaleValue);
-    }
-    drawText(div.alt, scaleValue);
+    drawImage(imgObj);
+    drawText(div.alt);
     ctx.restore();
   };
 }
 
 // * Draw Image Functions
 
-function drawImage(imgObj, scaleValue) {
-  canvas.width = imgObj.width * scaleValue;
-  canvas.height = imgObj.height * scaleValue + 350; // +100 acounts for "polaroid" effect spacing
-  ctx.scale(scaleValue, scaleValue);
+function drawImage(imgObj) {
+  canvas.width = imgObj.width;
+  canvas.height = imgObj.height + 250; // + 250 acounts for "polaroid" spacing below picture
   ctx.drawImage(imgObj, 0, 0);
 
   // TODO Keep inner border?
   // ctx.strokeStyle = "#666";
   // ctx.lineWidth = 15;
-  // ctx.strokeRect(
-  //   0,
-  //   0,
-  //   canvas.width / scaleValue,
-  //   canvas.height / scaleValue - 710
-  // );
-}
-
-function drawRotatedImage(imgObj, scaleValue) {
-  // imgObj w & h swapped due to img being rotated
-
-  // canvas.width = imgObj.height * scaleValue;
-  // canvas.height = imgObj.width * scaleValue + 650; // +100 acounts for "polaroid" effect spacing
-  // ctx.scale(scaleValue, scaleValue);
-  // ! new
-  canvas.width = imgObj.height * scaleValue;
-  canvas.height = imgObj.width * scaleValue + 350; // +100 acounts for "polaroid" effect spacing
-  ctx.scale(scaleValue, scaleValue);
-
-  ctx.rotate((90 * Math.PI) / 180);
-  ctx.drawImage(imgObj, 0, -3000);
-
-  // TODO Keep inner border?
-  // ctx.strokeStyle = "#666";
-  // ctx.lineWidth = 15;
-  // ctx.strokeRect(
-  //   0,
-  //   -3000,
-  //   canvas.height / scaleValue - 710,
-  //   canvas.width / scaleValue - 25
-  // );
+  // ctx.strokeRect(0, 0, canvas.width, canvas.height - 250);
 }
 
 // * Draw Text Function
 
-function drawText(alt, scaleValue) {
+function drawText(alt) {
   message = alt;
   ctx.fillStyle = textColor;
-  ctx.font = `300px ${font}, cursive`;
+  ctx.font = `125px ${font}, cursive`;
   ctx.textAlign = "center";
   ctx.fillText(
     message,
-    canvas.width / scaleValue / 2,
-    canvas.height / scaleValue - 150
+    canvas.width / 2,
+    canvas.height - 60 // places text in polaroid area below picture
   );
 }
