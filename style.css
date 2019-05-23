@@ -114,7 +114,7 @@ h1 {
   background: #444;
 }
 
-input:hover {
+input[type="color"]:hover {
   cursor: pointer;
 }
 
