@@ -125,7 +125,7 @@ function displayThumbs() {
     thumbnails.append(thumb);
   });
   firstImage = document.querySelector("div section div");
-  currentImage = firstImage; // for use in changeTextColor and changeFont functions
+  currentImage = firstImage; // for use in Control functions
   canvasImage(firstImage);
 }
 
