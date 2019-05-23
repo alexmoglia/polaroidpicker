@@ -80,7 +80,7 @@ h1 {
   justify-self: center; /* grid property - grid applied on #app-wrapper */
 
   max-width: 650px;
-  max-height: 700px;
+  max-height: 675px;
 }
 
 /* * Controls Section */
@@ -110,4 +110,20 @@ input[type="color"]:hover {
 
 #text-field {
   width: 60%;
+}
+
+/* * Footer */
+
+footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  text-align: right;
+  color: #444;
+  font-size: 1rem;
+  background: #222;
+  border-radius: 7%;
+  padding-top: 0.2rem;
+  padding-right: 2rem;
 }
