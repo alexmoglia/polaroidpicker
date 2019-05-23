@@ -60,6 +60,7 @@ let myPictureArray = [
 ];
 
 let thumbnails, preview, canvas, ctx, width, height, icon, appName, textField;
+let frameColor = "#090e12";
 let textColor = "#fff";
 let font = "Pacifico";
 let message = "";
@@ -83,8 +84,9 @@ function init() {
 // * Control Functions
 
 function changeFrameColor(value) {
-  canvas.style.background = value + "";
   icon.style.color = value + "";
+  frameColor = value + "";
+  canvasImage(currentImage);
 }
 
 function changeTextColor(value) {
@@ -114,7 +116,6 @@ function displayThumbs() {
     let thumb = document.createElement("div");
     thumb.classList.add("thumb");
     thumb.style.backgroundImage = `url('${currentImage.url}')`;
-    console.log(currentImage.url);
     thumb.alt = currentImage.title;
 
     thumb.addEventListener("click", function(event) {
@@ -124,6 +125,7 @@ function displayThumbs() {
 
     thumbnails.append(thumb);
   });
+
   firstImage = document.querySelector("div section div");
   currentImage = firstImage; // for use in Control functions
   canvasImage(firstImage);
@@ -145,14 +147,16 @@ function canvasImage(div) {
 // * Draw Image Functions
 
 function drawImage(imgObj) {
-  canvas.width = imgObj.width;
-  canvas.height = imgObj.height + 250; // + 250 acounts for "polaroid" spacing below picture
-  ctx.drawImage(imgObj, 0, 0);
+  canvas.width = imgObj.width + 150;
+  canvas.height = imgObj.height + 450; // acounts for "polaroid" spacing below picture
+  ctx.fillStyle = frameColor;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(imgObj, 75, 75);
 
-  // TODO Keep inner border?
-  // ctx.strokeStyle = "#666";
-  // ctx.lineWidth = 15;
-  // ctx.strokeRect(0, 0, canvas.width, canvas.height - 250);
+  // TODO inner border?
+  // ctx.strokeStyle = "#fff";
+  // ctx.lineWidth = 1;
+  // ctx.strokeRect(75, 75, imgObj.width, imgObj.height);
 }
 
 // * Draw Text Function
@@ -165,6 +169,6 @@ function drawText(alt) {
   ctx.fillText(
     message,
     canvas.width / 2,
-    canvas.height - 60 // places text in polaroid area below picture
+    canvas.height - 150 // places text in polaroid area below picture
   );
 }
