@@ -9,7 +9,7 @@ body {
 
 #app-wrapper {
   display: grid;
-  grid-template-columns: 358px 1fr 280px;
+  grid-template-columns: 358px 1fr 358px;
   grid-template-rows: 25px 600px;
   grid-gap: 1.5rem;
   justify-content: space-between;
@@ -92,7 +92,7 @@ h1 {
   justify-content: center;
   align-items: center;
 
-  justify-self: right; /* grid property - grid applied on #app-wrapper */
+  justify-self: right; /* grid property - from grid applied to #app-wrapper */
 }
 
 .control-class {
@@ -102,6 +102,25 @@ h1 {
   text-align: right;
   padding: 3rem 1.2rem;
   background: #444;
+}
+
+#frame-div {
+  /* display: grid;
+  grid-template-columns: repeat(1fr, 10); */
+
+  display: flex;
+}
+
+.swatch {
+  border: 1px solid #333;
+  width: 1.2rem;
+  height: 1.2rem;
+  margin: 0.1rem;
+}
+
+.swatch:hover {
+  border: 1px solid #fff;
+  cursor: pointer;
 }
 
 input[type="color"]:hover {

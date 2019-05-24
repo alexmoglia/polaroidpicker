@@ -59,6 +59,69 @@ let myPictureArray = [
   })
 ];
 
+let colorSwatches = [
+  (color1 = {
+    id: 1,
+    name: "dark blue",
+    value: "#090e12"
+  }),
+  (color2 = {
+    id: 2,
+    name: "blue",
+    value: "#443cba"
+  }),
+  (color3 = {
+    id: 3,
+    name: "purple",
+    value: "#b23bbd"
+  }),
+  (color4 = {
+    id: 4,
+    name: "pink",
+    value: "#d65f71"
+  }),
+  (color5 = {
+    id: 5,
+    name: "red",
+    value: "#ab2019"
+  }),
+  (color6 = {
+    id: 6,
+    name: "orange",
+    value: "#e0691f"
+  }),
+  (color7 = {
+    id: 7,
+    name: "yellow",
+    value: "#ebab09"
+  }),
+  (color8 = {
+    id: 8,
+    name: "lime",
+    value: "#c5f086"
+  }),
+  (color9 = {
+    id: 9,
+    name: "teal",
+    value: "#67f2e4"
+  }),
+  (color10 = {
+    id: 10,
+    name: "white",
+    value: "#f2f0ee"
+  })
+  // (color10 = {
+  //   id: 10,
+  //   name: "white",
+  //   value: "#f2f0ee"
+  // }),
+  // (color10 = {
+  //   id: 10,
+  //   name: "white",
+  //   value: "#f2f0ee"
+  // })
+];
+
 let thumbnails, preview, canvas, ctx, width, height, icon, appName, textField;
 let frameColor = "#090e12";
 let textColor = "#fff";
@@ -68,9 +131,10 @@ let message = "";
 window.onload = init;
 
 function init() {
-  thumbnails = document.querySelector("#thumbnail-section");
   icon = document.querySelector(".material-icons");
   appName = document.querySelector("#app-name");
+  thumbnails = document.querySelector("#thumbnail-section");
+  frameColorDiv = document.querySelector("#frame-div");
   textField = document.querySelector("#text-field");
 
   canvas = document.querySelector("#preview-canvas");
@@ -79,6 +143,7 @@ function init() {
   height = canvas.height;
 
   displayThumbs();
+  displaySwatches();
 }
 
 // * Control Functions
@@ -129,6 +194,21 @@ function displayThumbs() {
   firstImage = document.querySelector("div section div");
   currentImage = firstImage; // for use in Control functions
   canvasImage(firstImage);
+}
+
+function displaySwatches() {
+  colorSwatches.forEach(function(currentSwatch) {
+    let swatch = document.createElement("div");
+    swatch.classList.add("swatch");
+    swatch.style.background = currentSwatch.value;
+    swatch.alt = currentSwatch.name;
+
+    swatch.addEventListener("click", function(event) {
+      // TODO - apply clicked swatch to frame or text
+    });
+    frameColorDiv.append(swatch);
+  });
+  // TODO - create and append custom swatch picker
 }
 
 function canvasImage(div) {
