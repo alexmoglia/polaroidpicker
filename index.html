@@ -46,29 +46,18 @@
       <!-- Controls -->
       <section id="controls-section" class="section">
         <!-- Frame Color -->
-        <div id="frame-div" class="control-class">
-          <!-- ! temp removing  -->
-          <!-- <label for="frame-color">Frame Color: </label>
-          <input
-            type="color"
-            id="frame-color"
-            oninput="changeFrameColor(this.value)"
-          /> -->
+        <div id="frame-color-div" class="control-class">
+          <p class="input-p">frame color</p>
         </div>
 
         <!-- Text Color -->
         <div id="text-color-div" class="control-class">
-          <label for="text-color">Text Color: </label>
-          <input
-            type="color"
-            id="text-color"
-            oninput="changeTextColor(this.value)"
-          />
+          <p class="input-p">text color</p>
         </div>
 
         <!-- Font Family -->
         <div id="font-div" class="control-class">
-          <label for="font">Font: </label>
+          <p class="input-p">font</p>
           <select id="font" oninput="changeFont(this.value)">
             <option value="Pacifico">Pacifico</option>
             <option value="Kaushan Script">Kaushan Script</option>
@@ -78,8 +67,13 @@
 
         <!-- Text Input -->
         <div id="text-div" class="control-class">
-          <label for="text-input">Text:</label>
-          <input type="text" id="text-field" oninput="changeText(this.value)" />
+          <p class="input-p">message</p>
+          <input
+            type="text"
+            id="text-field"
+            placeholder="type something!"
+            oninput="changeText(this.value)"
+          />
         </div>
       </section>
     </div>
