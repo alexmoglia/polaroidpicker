@@ -67,62 +67,67 @@ let colorSwatches = [
   }),
   (color2 = {
     id: 2,
-    name: "blue",
-    value: "#443cba"
+    name: "white",
+    value: "#f2f0ee"
   }),
   (color3 = {
     id: 3,
-    name: "purple",
-    value: "#b23bbd"
+    name: "light blue",
+    value: "#cdecff"
   }),
   (color4 = {
     id: 4,
-    name: "pink",
-    value: "#d65f71"
+    name: "purple",
+    value: "#f2e2ff"
   }),
   (color5 = {
     id: 5,
-    name: "red",
-    value: "#ab2019"
+    name: "green",
+    value: "#a8e6cf"
   }),
   (color6 = {
     id: 6,
-    name: "orange",
-    value: "#e0691f"
-  }),
-  (color7 = {
-    id: 7,
-    name: "yellow",
-    value: "#ebab09"
-  }),
-  (color8 = {
-    id: 8,
-    name: "lime",
-    value: "#c5f086"
-  }),
-  (color9 = {
-    id: 9,
     name: "teal",
     value: "#67f2e4"
   }),
+  (color7 = {
+    id: 7,
+    name: "lime",
+    value: "#dcedc1"
+  }),
+  (color8 = {
+    id: 8,
+    name: "orange",
+    value: "#ffd3b6"
+  }),
+  (color9 = {
+    id: 9,
+    name: "rose",
+    value: "#ffaaa5"
+  }),
   (color10 = {
     id: 10,
-    name: "white",
-    value: "#f2f0ee"
+    name: "red",
+    value: "#ff8b94"
+  }),
+  (color11 = {
+    id: 11,
+    name: "dark red",
+    value: "#602320"
   })
-  // (color10 = {
-  //   id: 10,
-  //   name: "white",
-  //   value: "#f2f0ee"
-  // }),
-  // (color10 = {
-  //   id: 10,
-  //   name: "white",
-  //   value: "#f2f0ee"
-  // })
 ];
 
-let thumbnails, preview, canvas, ctx, width, height, icon, appName, textField;
+let thumbnails,
+  preview,
+  canvas,
+  ctx,
+  width,
+  height,
+  icon,
+  appName,
+  textField,
+  textColorDiv,
+  frameColorDiv;
 let frameColor = "#090e12";
 let textColor = "#fff";
 let font = "Pacifico";
@@ -131,34 +136,39 @@ let message = "";
 window.onload = init;
 
 function init() {
+  // Query Selectors
   icon = document.querySelector(".material-icons");
   appName = document.querySelector("#app-name");
   thumbnails = document.querySelector("#thumbnail-section");
-  frameColorDiv = document.querySelector("#frame-div");
+  frameColorDiv = document.querySelector("#frame-color-div");
+  textColorDiv = document.querySelector("#text-color-div");
   textField = document.querySelector("#text-field");
 
+  // Canvas
   canvas = document.querySelector("#preview-canvas");
   ctx = canvas.getContext("2d");
   width = canvas.width;
   height = canvas.height;
 
+  // Functions
   displayThumbs();
-  displaySwatches();
+  displaySwatches(frameColorDiv);
+  displaySwatches(textColorDiv);
 }
 
 // * Control Functions
 
-function changeFrameColor(value) {
-  icon.style.color = value + "";
-  frameColor = value + "";
-  canvasImage(currentImage);
-}
-
-function changeTextColor(value) {
-  textColor = value + "";
-  appName.style.color = value + "";
-  icon.style.background = value + "";
-  canvasImage(currentImage);
+function changeColor(value, divWrapper) {
+  if (divWrapper.id === "frame-color-div") {
+    icon.style.color = value + "";
+    frameColor = value + "";
+    canvasImage(currentImage);
+  } else {
+    textColor = value + "";
+    appName.style.color = value + "";
+    icon.style.background = value + "";
+    canvasImage(currentImage);
+  }
 }
 
 function changeFont(value) {
@@ -178,37 +188,51 @@ function changeText(value) {
 
 function displayThumbs() {
   myPictureArray.forEach(function(currentImage) {
+    // Create thumbnail div elements
     let thumb = document.createElement("div");
     thumb.classList.add("thumb");
     thumb.style.backgroundImage = `url('${currentImage.url}')`;
     thumb.alt = currentImage.title;
-
+    // Event listener to draw clicked thumb to canvas
     thumb.addEventListener("click", function(event) {
       canvasImage(event.target);
       document.querySelector("#text-field").value = "";
     });
-
+    // Append thumb to thumbnail div wrapper
     thumbnails.append(thumb);
   });
-
+  // Call first thumb div in wrapper to the canvas
   firstImage = document.querySelector("div section div");
   currentImage = firstImage; // for use in Control functions
   canvasImage(firstImage);
 }
 
-function displaySwatches() {
+function displaySwatches(divWrapper) {
+  // Color swatch divs
   colorSwatches.forEach(function(currentSwatch) {
+    // Create swatch div elements
     let swatch = document.createElement("div");
     swatch.classList.add("swatch");
     swatch.style.background = currentSwatch.value;
     swatch.alt = currentSwatch.name;
-
+    // Event listener to apply color to frame or text
     swatch.addEventListener("click", function(event) {
-      // TODO - apply clicked swatch to frame or text
+      changeColor(event.target.style.backgroundColor, divWrapper);
     });
-    frameColorDiv.append(swatch);
+    // Append swatch to divWrapper passed in to displaySwatches()
+    divWrapper.append(swatch);
   });
-  // TODO - create and append custom swatch picker
+
+  // Custom color picker input
+  let picker = document.createElement("input");
+  picker.type = "color";
+  picker.classList.add("swatch");
+  picker.value = "#fff";
+  picker.addEventListener("input", function(event) {
+    changeColor(event.target.value, divWrapper);
+  });
+  // Append picker to divWrapper passed in to displaySwatches()
+  divWrapper.append(picker);
 }
 
 function canvasImage(div) {
@@ -234,9 +258,9 @@ function drawImage(imgObj) {
   ctx.drawImage(imgObj, 75, 75);
 
   // TODO inner border?
-  // ctx.strokeStyle = "#fff";
-  // ctx.lineWidth = 1;
-  // ctx.strokeRect(75, 75, imgObj.width, imgObj.height);
+  ctx.strokeStyle = "#fff";
+  ctx.lineWidth = 1;
+  ctx.strokeRect(75, 75, imgObj.width, imgObj.height);
 }
 
 // * Draw Text Function
