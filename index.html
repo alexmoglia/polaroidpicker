@@ -5,15 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <link
-      href="https://fonts.googleapis.com/css?family=Pacifico&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css?family=Kaushan+Script&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css?family=Berkshire+Swash&display=swap"
+      href="https://fonts.googleapis.com/css?family=Pacifico|Kaushan+Script|Berkshire+Swash|Amatic+SC|Gloria+Hallelujah|Permanent+Marker|Satisfy|Sue+Ellen+Francisco&display=swap"
       rel="stylesheet"
     />
     <link
@@ -26,48 +18,73 @@
   </head>
 
   <body>
-    <!-- Header -->
-    <!-- <a href="https://alexmoglia.github.io/polaroidpicker/"> -->
-    <a href="index.html">
-      <div id="header-wrapper">
-        <i class="material-icons">camera_enhance</i>
-        <h1 id="app-name">Polaroid Picker</h1>
-      </div>
-    </a>
-
     <!-- App Wrapper -->
     <div id="app-wrapper">
+      <!-- Header -->
+      <div id="header-wrapper">
+        <a href="index.html">
+          <i class="material-icons">camera_enhance</i>
+          <h1 id="app-name">Polaroid Picker</h1>
+        </a>
+      </div>
+
       <!-- Thumbnails -->
-      <section id="thumbnail-section" class="section"></section>
+      <section id="thumbnail-section" class="section">
+        <!-- Upload Details/Summary -->
+        <label for="file-input" id="file-input-label">Upload</label>
+        <input
+          type="file"
+          id="file-input"
+          multiple
+          accept="image/*"
+          onchange="uploadImages(this.files);"
+        />
+        <!-- Details hidden at startup until upload -->
+        <details class="details display-none" id="upload-details" open>
+          <summary class="summary" id="upload-summary">My Album</summary>
+          <div id="upload-thumbnail-div" class="thumbnail-class"></div>
+        </details>
+
+        <!-- Example Album Details/Summary -->
+        <details class="details" id="example-details" open>
+          <summary class="summary" id="example-summary">Examples</summary>
+          <div id="example-thumbnail-div" class="thumbnail-class"></div>
+        </details>
+      </section>
 
       <!-- Canvas -->
-      <canvas id="preview-canvas" width="700" height="700"></canvas>
+      <canvas id="canvas" width="650" height="650"></canvas>
 
       <!-- Controls -->
       <section id="controls-section" class="section">
         <!-- Frame Color -->
         <div id="frame-color-div" class="control-class">
-          <p class="input-p">frame color</p>
+          <p class="input-p">Frame color</p>
         </div>
 
         <!-- Text Color -->
         <div id="text-color-div" class="control-class">
-          <p class="input-p">text color</p>
+          <p class="input-p">Text color</p>
         </div>
 
         <!-- Font Family -->
         <div id="font-div" class="control-class">
-          <p class="input-p">font</p>
+          <p class="input-p">Font</p>
           <select id="font" oninput="changeFont(this.value)">
-            <option value="Pacifico">Pacifico</option>
-            <option value="Kaushan Script">Kaushan Script</option>
+            <option value="Amatic SC">Amatic SC</option>
             <option value="Berkshire Swash">Berkshire Swash</option>
+            <option value="Gloria Hallelujah">Gloria Hallelujah</option>
+            <option value="Kaushan Script">Kaushan Script</option>
+            <option value="Pacifico" selected>Pacifico</option>
+            <option value="Permanent Marker">Permanent Marker</option>
+            <option value="Satisfy">Satisfy</option>
+            <option value="Sue Ellen Francisco">Sue Ellen Francisco</option>
           </select>
         </div>
 
         <!-- Text Input -->
         <div id="text-div" class="control-class">
-          <p class="input-p">message</p>
+          <p class="input-p">Message</p>
           <input
             type="text"
             id="text-field"
