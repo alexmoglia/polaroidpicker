@@ -1,10 +1,9 @@
-let myPictureArray = [
+const EXAMPLE_ALBUM = [
   (pic1 = {
     albumId: 1,
     id: 1,
     title: "お日さま・Nara",
-    url: "images/img1.JPG",
-    rotateFlag: true
+    url: "images/img1.JPG"
   }),
   (pic2 = {
     albumId: 1,
@@ -16,15 +15,13 @@ let myPictureArray = [
     albumId: 1,
     id: 3,
     title: "金・Nara",
-    url: "images/img3.JPG",
-    rotateFlag: true
+    url: "images/img3.JPG"
   }),
   (pic4 = {
     albumId: 1,
     id: 4,
     title: "アレクス・Kyoto",
-    url: "images/img4.JPG",
-    rotateFlag: true
+    url: "images/img4.JPG"
   }),
   (pic5 = {
     albumId: 1,
@@ -54,12 +51,11 @@ let myPictureArray = [
     albumId: 1,
     id: 9,
     title: "力・Tokyo",
-    url: "images/img9.JPG",
-    rotateFlag: true
+    url: "images/img9.JPG"
   })
 ];
 
-let colorSwatches = [
+const COLOR_SWATCHES = [
   (color1 = {
     id: 1,
     name: "dark blue",
@@ -117,46 +113,102 @@ let colorSwatches = [
   })
 ];
 
-let thumbnails,
+let exampleThumbsWrapper,
+  uploadThumbsWrapper,
+  uploadButton,
+  uploadDetails,
   preview,
   canvas,
   ctx,
-  width,
-  height,
   icon,
   appName,
-  textField,
+  frameColorDiv,
   textColorDiv,
-  frameColorDiv;
+  textField;
 let frameColor = "#090e12";
 let textColor = "#fff";
 let font = "Pacifico";
 let message = "";
+// let uploadAlbum = [];
 
 window.onload = init;
 
 function init() {
   // Query Selectors
-  icon = document.querySelector(".material-icons");
-  appName = document.querySelector("#app-name");
-  thumbnails = document.querySelector("#thumbnail-section");
-  frameColorDiv = document.querySelector("#frame-color-div");
-  textColorDiv = document.querySelector("#text-color-div");
+  icon = document.querySelector(".material-icons"); // used in changeColor()
+  appName = document.querySelector("#app-name"); // used in changeColor()
+  uploadButton = document.querySelector("#file-input-label");
+  uploadDetails = document.querySelector("#upload-details");
+  uploadThumbsWrapper = document.querySelector("#upload-thumbnail-div"); // used in displayThumbs(), uploadImages()
+  exampleThumbsWrapper = document.querySelector("#example-thumbnail-div"); // used in displayThumbs()
+  frameColorDiv = document.querySelector("#frame-color-div"); // used in displaySwatches()
+  textColorDiv = document.querySelector("#text-color-div"); // used in displaySwatches()
   textField = document.querySelector("#text-field");
 
+  // Toggles albums so only one can be open
+  let summaries = document.querySelectorAll(".summary");
+  summaries.forEach(summary =>
+    summary.addEventListener("click", function(event) {
+      toggleAlbums(event.target);
+    })
+  );
+
   // Canvas
-  canvas = document.querySelector("#preview-canvas");
+  canvas = document.querySelector("#canvas");
   ctx = canvas.getContext("2d");
-  width = canvas.width;
-  height = canvas.height;
 
   // Functions
-  displayThumbs();
+  displayThumbs(EXAMPLE_ALBUM, exampleThumbsWrapper);
   displaySwatches(frameColorDiv);
   displaySwatches(textColorDiv);
 }
 
 // * Control Functions
+
+function toggleAlbums(clickedAlbum) {
+  if (clickedAlbum.id === "upload-summary") {
+    if (document.querySelector("#example-details").hasAttribute("open")) {
+      document.querySelector("#example-details").removeAttribute("open");
+    } else if (document.querySelector("#upload-details").hasAttribute("open")) {
+      document.querySelector("#example-details").setAttribute("open", "open");
+    }
+  } else if (clickedAlbum.id === "example-summary") {
+    if (document.querySelector("#upload-details").hasAttribute("open")) {
+      document.querySelector("#upload-details").removeAttribute("open");
+    } else if (
+      document.querySelector("#example-details").hasAttribute("open")
+    ) {
+      document.querySelector("#upload-details").setAttribute("open", "open");
+    }
+  }
+}
+
+function uploadImages(files) {
+  uploadButton.classList.add("display-none"); // hide the original Upload button
+  uploadDetails.classList.remove("display-none"); // show the "My Album" details/summary/div
+  document.querySelector("#example-details").removeAttribute("open"); // collapse the "Examples" album
+
+  for (let i = 0; i < files.length; i++) {
+    let file = files[i];
+    let reader = new FileReader();
+    reader.onload = function(event) {
+      let thumb = document.createElement("div");
+      thumb.classList.add("thumb");
+      thumb.style.backgroundImage = `url('${event.target.result}')`;
+      thumb.alt = "";
+
+      // Event listener to draw clicked thumb to canvas
+      thumb.addEventListener("click", function(event) {
+        canvasImage(event.target);
+        document.querySelector("#text-field").value = ""; // clears custom message input upon new image selected
+      });
+
+      // Append thumb to thumbnail div wrapper
+      uploadThumbsWrapper.append(thumb);
+    };
+    reader.readAsDataURL(file);
+  }
+}
 
 function changeColor(value, divWrapper) {
   if (divWrapper.id === "frame-color-div") {
@@ -184,10 +236,12 @@ function changeText(value) {
   }
 }
 
+// TODO Change Font Size function
+
 // * Main Functions
 
-function displayThumbs() {
-  myPictureArray.forEach(function(currentImage) {
+function displayThumbs(album, wrapper) {
+  album.forEach(function(currentImage) {
     // Create thumbnail div elements
     let thumb = document.createElement("div");
     thumb.classList.add("thumb");
@@ -196,20 +250,22 @@ function displayThumbs() {
     // Event listener to draw clicked thumb to canvas
     thumb.addEventListener("click", function(event) {
       canvasImage(event.target);
-      document.querySelector("#text-field").value = "";
+      document.querySelector("#text-field").value = ""; // clears custom message input upon new image selected
     });
     // Append thumb to thumbnail div wrapper
-    thumbnails.append(thumb);
+    wrapper.append(thumb);
   });
+
+  //? replace with function to draw instructions to canvas at startup?
   // Call first thumb div in wrapper to the canvas
-  firstImage = document.querySelector("div section div");
-  currentImage = firstImage; // for use in Control functions
-  canvasImage(firstImage);
+  // firstImage = document.querySelector("#upload-thumbnail-div div");
+  // currentImage = firstImage; // for use in Control functions
+  // canvasImage(firstImage);
 }
 
 function displaySwatches(divWrapper) {
   // Color swatch divs
-  colorSwatches.forEach(function(currentSwatch) {
+  COLOR_SWATCHES.forEach(function(currentSwatch) {
     // Create swatch div elements
     let swatch = document.createElement("div");
     swatch.classList.add("swatch");
@@ -236,30 +292,48 @@ function displaySwatches(divWrapper) {
 }
 
 function canvasImage(div) {
-  let imgObj = new Image();
   currentImage = div; // for use in Control functions
+  let imgObj = new Image();
   imgObj.src = div.style.backgroundImage.slice(5, -2); // strips url("  ")
   imgObj.onload = function() {
-    ctx.clearRect(0, 0, width, height);
+    setCanvasMaxSize();
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.save();
-    drawImage(imgObj);
+    drawCanvasImage(imgObj);
     drawText(div.alt);
     ctx.restore();
   };
 }
 
+// * Canvas Functions
+
+function setCanvasMaxSize() {
+  let width =
+    window.innerWidth ||
+    document.documentElement.clientWidth ||
+    document.body.clientWidth;
+
+  let height =
+    window.innerHeight ||
+    document.documentElement.clientHeight ||
+    document.body.clientHeight;
+
+  document.querySelector("#canvas").style.maxWidth = width - 800 + "px";
+  document.querySelector("#canvas").style.maxHeight = height - 125 + "px";
+}
+
 // * Draw Image Functions
 
-function drawImage(imgObj) {
+function drawCanvasImage(imgObj) {
   canvas.width = imgObj.width + 150;
   canvas.height = imgObj.height + 450; // acounts for "polaroid" spacing below picture
   ctx.fillStyle = frameColor;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   ctx.drawImage(imgObj, 75, 75);
 
-  // TODO inner border?
-  ctx.strokeStyle = "#fff";
-  ctx.lineWidth = 1;
+  //TODO inner border controls (lineWidth, on/off)
+  ctx.strokeStyle = textColor;
+  ctx.lineWidth = 3;
   ctx.strokeRect(75, 75, imgObj.width, imgObj.height);
 }
 
