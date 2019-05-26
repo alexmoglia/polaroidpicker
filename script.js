@@ -117,14 +117,14 @@ let exampleThumbsWrapper,
   uploadThumbsWrapper,
   uploadButton,
   uploadDetails,
+  exampleDetails,
   preview,
   canvas,
   ctx,
   icon,
   appName,
   frameColorDiv,
-  textColorDiv,
-  textField;
+  textColorDiv;
 let frameColor = "#090e12";
 let textColor = "#fff";
 let font = "Pacifico";
@@ -137,13 +137,13 @@ function init() {
   // Query Selectors
   icon = document.querySelector(".material-icons"); // used in changeColor()
   appName = document.querySelector("#app-name"); // used in changeColor()
-  uploadButton = document.querySelector("#file-input-label");
-  uploadDetails = document.querySelector("#upload-details");
+  uploadButton = document.querySelector("#file-input-label"); // used in uploadImages()
+  uploadDetails = document.querySelector("#upload-details"); // used in toggleAlbums()
   uploadThumbsWrapper = document.querySelector("#upload-thumbnail-div"); // used in displayThumbs(), uploadImages()
+  exampleDetails = document.querySelector("#example-details"); // used in toggleAlbums()
   exampleThumbsWrapper = document.querySelector("#example-thumbnail-div"); // used in displayThumbs()
   frameColorDiv = document.querySelector("#frame-color-div"); // used in displaySwatches()
   textColorDiv = document.querySelector("#text-color-div"); // used in displaySwatches()
-  textField = document.querySelector("#text-field");
 
   // Toggles albums so only one can be open
   let summaries = document.querySelectorAll(".summary");
@@ -167,18 +167,16 @@ function init() {
 
 function toggleAlbums(clickedAlbum) {
   if (clickedAlbum.id === "upload-summary") {
-    if (document.querySelector("#example-details").hasAttribute("open")) {
-      document.querySelector("#example-details").removeAttribute("open");
-    } else if (document.querySelector("#upload-details").hasAttribute("open")) {
-      document.querySelector("#example-details").setAttribute("open", "open");
+    if (exampleDetails.hasAttribute("open")) {
+      exampleDetails.removeAttribute("open");
+    } else if (uploadDetails.hasAttribute("open")) {
+      exampleDetails.setAttribute("open", "open");
     }
   } else if (clickedAlbum.id === "example-summary") {
-    if (document.querySelector("#upload-details").hasAttribute("open")) {
-      document.querySelector("#upload-details").removeAttribute("open");
-    } else if (
-      document.querySelector("#example-details").hasAttribute("open")
-    ) {
-      document.querySelector("#upload-details").setAttribute("open", "open");
+    if (uploadDetails.hasAttribute("open")) {
+      uploadDetails.removeAttribute("open");
+    } else if (exampleDetails.hasAttribute("open")) {
+      uploadDetails.setAttribute("open", "open");
     }
   }
 }
@@ -186,7 +184,7 @@ function toggleAlbums(clickedAlbum) {
 function uploadImages(files) {
   uploadButton.classList.add("display-none"); // hide the original Upload button
   uploadDetails.classList.remove("display-none"); // show the "My Album" details/summary/div
-  document.querySelector("#example-details").removeAttribute("open"); // collapse the "Examples" album
+  exampleDetails.removeAttribute("open"); // collapse the "Examples" album
 
   for (let i = 0; i < files.length; i++) {
     let file = files[i];
@@ -208,6 +206,7 @@ function uploadImages(files) {
     };
     reader.readAsDataURL(file);
   }
+  uploadDetails.setAttribute("open", "open"); // ensures "My Album" opens, even if Examples album is closed first
 }
 
 function changeColor(value, divWrapper) {
@@ -258,9 +257,9 @@ function displayThumbs(album, wrapper) {
 
   //? replace with function to draw instructions to canvas at startup?
   // Call first thumb div in wrapper to the canvas
-  // firstImage = document.querySelector("#upload-thumbnail-div div");
-  // currentImage = firstImage; // for use in Control functions
-  // canvasImage(firstImage);
+  firstImage = document.querySelector("#example-thumbnail-div div");
+  currentImage = firstImage; // for use in Control functions
+  canvasImage(firstImage);
 }
 
 function displaySwatches(divWrapper) {
