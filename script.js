@@ -123,11 +123,12 @@ let exampleThumbsWrapper,
   ctx,
   icon,
   appName,
+  selectedImage,
   frameColorDiv,
   textColorDiv;
 let frameColor = "#090e12";
 let textColor = "#fff";
-let font = "Pacifico";
+let font = "Gloria Hallelujah";
 let message = "";
 // let uploadAlbum = [];
 
@@ -158,6 +159,7 @@ function init() {
   ctx = canvas.getContext("2d");
 
   // Functions
+  displayCanvasInstructions();
   displayThumbs(EXAMPLE_ALBUM, exampleThumbsWrapper);
   displaySwatches(frameColorDiv);
   displaySwatches(textColorDiv);
@@ -166,6 +168,9 @@ function init() {
 // * Control Functions
 
 function toggleAlbums(clickedAlbum) {
+  // TODO
+  //? update to take in clicked button & array of possible buttons in section,
+  //? thus allowing for us with controls section?
   if (clickedAlbum.id === "upload-summary") {
     if (exampleDetails.hasAttribute("open")) {
       exampleDetails.removeAttribute("open");
@@ -210,36 +215,48 @@ function uploadImages(files) {
 }
 
 function changeColor(value, divWrapper) {
+  value += ""; // cast value as string
   if (divWrapper.id === "frame-color-div") {
-    icon.style.color = value + "";
-    frameColor = value + "";
-    canvasImage(currentImage);
+    icon.style.color = value;
+    frameColor = value;
+    canvasImage(selectedImage);
   } else {
-    textColor = value + "";
-    appName.style.color = value + "";
-    icon.style.background = value + "";
-    canvasImage(currentImage);
+    textColor = value;
+    appName.style.color = value;
+    icon.style.background = value;
+    if (selectedImage) {
+      canvasImage(selectedImage);
+    } else {
+      displayCanvasInstructions(); // if no image loaded, change font color of Canvas Instructions
+    }
   }
 }
 
 function changeFont(value) {
   font = value + "";
   appName.style.fontFamily = `'${value + ""}', cursive`;
-  canvasImage(currentImage);
+  if (selectedImage) {
+    canvasImage(selectedImage);
+  } else {
+    displayCanvasInstructions(); // if no image loaded, change font family of Canvas Instructions
+  }
 }
 
 function changeText(value) {
   if (value !== "") {
-    currentImage.alt = value;
-    canvasImage(currentImage);
+    selectedImage.alt = value;
+    canvasImage(selectedImage);
   }
 }
 
-// TODO Change Font Size function
+// TODO Change Font Size (& Location?) function
+
+// TODO Picture Border function (color, on/off, width)
 
 // * Main Functions
 
 function displayThumbs(album, wrapper) {
+  // called from init()
   album.forEach(function(currentImage) {
     // Create thumbnail div elements
     let thumb = document.createElement("div");
@@ -254,15 +271,11 @@ function displayThumbs(album, wrapper) {
     // Append thumb to thumbnail div wrapper
     wrapper.append(thumb);
   });
-
-  //? replace with function to draw instructions to canvas at startup?
-  // Call first thumb div in wrapper to the canvas
-  firstImage = document.querySelector("#example-thumbnail-div div");
-  currentImage = firstImage; // for use in Control functions
-  canvasImage(firstImage);
 }
 
 function displaySwatches(divWrapper) {
+  // Called from init()
+
   // Color swatch divs
   COLOR_SWATCHES.forEach(function(currentSwatch) {
     // Create swatch div elements
@@ -279,19 +292,20 @@ function displaySwatches(divWrapper) {
   });
 
   // Custom color picker input
-  let picker = document.createElement("input");
-  picker.type = "color";
-  picker.classList.add("swatch");
-  picker.value = "#fff";
-  picker.addEventListener("input", function(event) {
+  let colorPicker = document.createElement("input");
+  colorPicker.type = "color";
+  colorPicker.classList.add("swatch");
+  colorPicker.value = "#fff";
+  colorPicker.addEventListener("input", function(event) {
     changeColor(event.target.value, divWrapper);
   });
-  // Append picker to divWrapper passed in to displaySwatches()
-  divWrapper.append(picker);
+  // Append colorPicker to divWrapper passed in to displaySwatches()
+  divWrapper.append(colorPicker);
 }
 
 function canvasImage(div) {
-  currentImage = div; // for use in Control functions
+  // called in event listeners on thumbs, in changeColor(), changeFont(), changeText()
+  selectedImage = div; // for use in Control functions
   let imgObj = new Image();
   imgObj.src = div.style.backgroundImage.slice(5, -2); // strips url("  ")
   imgObj.onload = function() {
@@ -306,7 +320,53 @@ function canvasImage(div) {
 
 // * Canvas Functions
 
+function displayCanvasInstructions() {
+  setCanvasMaxSize();
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.save();
+  const INSTRUCTIONS_FONT = font;
+  ctx.font = `50px ${INSTRUCTIONS_FONT}, cursive`;
+
+  // Welcome message
+  ctx.fillStyle = textColor;
+  let message = "Welcome to Polaroid Picker!";
+  ctx.textAlign = "center";
+  ctx.fillText(message, canvas.width / 2, 125);
+
+  // Thumbs message
+  message = "< Upload some images or";
+  ctx.font = `30px ${INSTRUCTIONS_FONT}, cursive`;
+  ctx.fillStyle = "#a8e6cf";
+  ctx.textAlign = "left";
+  ctx.fillText(message, 30, canvas.height / 3.3);
+
+  message = "play with the examples";
+  ctx.textAlign = "left";
+  ctx.fillText(message, 70, canvas.height / 2.8);
+
+  // Controls message
+  message = "Change the colors, the >";
+  ctx.fillStyle = "#ffaaa5";
+  ctx.textAlign = "right";
+  ctx.fillText(message, canvas.width - 30, canvas.height / 1.9);
+
+  message = "font, and the text";
+  ctx.fillText(message, canvas.width - 70, canvas.height / 1.7);
+
+  // Save message
+  message = "Uploaded images are NOT sent to a server,";
+  ctx.fillStyle = "#cdecff";
+  ctx.textAlign = "center";
+  ctx.fillText(message, canvas.width / 2, canvas.height / 1.3);
+
+  message = "so make sure to save your favorites!";
+  ctx.fillText(message, canvas.width / 2, canvas.height / 1.2);
+
+  ctx.restore();
+}
+
 function setCanvasMaxSize() {
+  // called in canvasImage()
   let width =
     window.innerWidth ||
     document.documentElement.clientWidth ||

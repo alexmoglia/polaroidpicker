@@ -54,7 +54,10 @@
       </section>
 
       <!-- Canvas -->
-      <canvas id="canvas" width="650" height="650"></canvas>
+      <div id="canvas-div">
+        <!-- <canvas id="canvas" width="650" height="650"></canvas> -->
+        <canvas id="canvas" width="800" height="800"></canvas>
+      </div>
 
       <!-- Controls -->
       <section id="controls-section" class="section">
@@ -74,9 +77,11 @@
           <select id="font" oninput="changeFont(this.value)">
             <option value="Amatic SC">Amatic SC</option>
             <option value="Berkshire Swash">Berkshire Swash</option>
-            <option value="Gloria Hallelujah">Gloria Hallelujah</option>
+            <option value="Gloria Hallelujah" selected
+              >Gloria Hallelujah</option
+            >
             <option value="Kaushan Script">Kaushan Script</option>
-            <option value="Pacifico" selected>Pacifico</option>
+            <option value="Pacifico">Pacifico</option>
             <option value="Permanent Marker">Permanent Marker</option>
             <option value="Satisfy">Satisfy</option>
             <option value="Sue Ellen Francisco">Sue Ellen Francisco</option>
