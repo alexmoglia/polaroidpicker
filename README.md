@@ -7,7 +7,7 @@ TO DO
 Example Album:
 
 - Add default font/color data
-- Update text fields (remove Japanese for final publishing)
+- Replace image with unsplash
 
 Upload Section:
 
@@ -16,6 +16,7 @@ Upload Section:
 
 Canvas:
 
+- Canvas instructions for using tool (instead of loading first image to canvas)
 - Update canvasImage() to use default font/color data from Album objects
 - Save color/font data to thumb object (like message)
 - Animate polaroid creation
