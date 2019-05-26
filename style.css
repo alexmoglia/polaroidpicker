@@ -12,6 +12,7 @@ body {
 #background-div {
   /* Background pattern from Toptal Subtle Patterns */
   /* background: url("images/patterns/papyrus-dark.png"); */
+  /* background: url("images/patterns/pink\ dust.png"); */
   background: url("images/patterns/darkness.png");
   opacity: 0.4;
   position: absolute;
@@ -45,7 +46,7 @@ a {
 
 h1 {
   color: #fff;
-  font-family: "Pacifico", cursive;
+  font-family: "Gloria Hallelujah", cursive;
   font-size: 2rem;
   text-shadow: -5px -5px 5px #111;
   display: inline-block;
@@ -115,7 +116,7 @@ h1 {
 
 .details:hover {
   color: #111;
-  background: #fff;
+  background: #929efa;
 }
 
 .details:not([open]) {
@@ -136,6 +137,10 @@ h1 {
 
 #upload-details {
   margin-bottom: 0.5rem;
+}
+
+#upload-details:hover {
+  background: #629cf2;
 }
 
 .summary::-webkit-details-marker {
@@ -170,6 +175,10 @@ h1 {
 
 /* * Canvas Section */
 
+#canvas-div {
+  justify-self: center;
+}
+
 #canvas {
   box-shadow: -15px 15px 15px, 15px 15px 15px;
   border-radius: 3px;
@@ -187,7 +196,9 @@ h1 {
   justify-content: center;
   align-items: center;
 
-  justify-self: right; /* grid property - from grid applied to #app-wrapper */
+  /* grid properties applied to this section - from grid applied to #app-wrapper */
+  grid-column: 3 / 4;
+  /* justify-self: right; */
 }
 
 .control-class {
