@@ -4,11 +4,6 @@ https://alexmoglia.github.io/polaroidpicker/
 
 TO DO
 
-Example Album:
-
-- Add default font/color data
-- Replace images with unsplash
-
 Upload Section:
 
 - Upload More button
@@ -16,8 +11,7 @@ Upload Section:
 
 Canvas:
 
-- Update canvasImage() to use default font/color data from Album objects
-- Save color/font data to thumb object (like message)
+- change math so frame is more consistently sized around the image
 - Animate polaroid creation
 
 Controls:
