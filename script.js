@@ -1,57 +1,107 @@
 const EXAMPLE_ALBUM = [
   (pic1 = {
-    albumId: 1,
-    id: 1,
-    title: "お日さま・Nara",
-    url: "images/img1.JPG"
+    albumId: "ex",
+    id: 0,
+    message: "w i l d ・ f i r e",
+    frameColor: "#04272d",
+    textColor: "#fde9c8",
+    borderColor: "#fde9c8",
+    borderWidth: 1,
+    font: "Gloria Hallelujah",
+    textSize: "120px",
+    url: "images/examples/bonfire.JPG",
+    credit: "Photo by Vlad Bagacian from Pexels"
   }),
   (pic2 = {
-    albumId: 1,
-    id: 2,
-    title: "鹿・Nara",
-    url: "images/img2.JPG"
+    albumId: "ex",
+    id: 1,
+    message: "golden",
+    frameColor: "#f2f0ee",
+    textColor: "#c07f48",
+    borderColor: "#c07f48",
+    borderWidth: 3,
+    font: "Berkshire Swash",
+    textSize: "150px",
+    url: "images/examples/abaya-abu.JPG",
+    credit: "Photo by Oliver Sjöström from Pexels"
   }),
   (pic3 = {
-    albumId: 1,
-    id: 3,
-    title: "金・Nara",
-    url: "images/img3.JPG"
+    albumId: "ex",
+    id: 2,
+    message: "Ocean Air '97",
+    frameColor: "#90a7c9",
+    textColor: "#fff",
+    borderColor: "#fff",
+    borderWidth: 15,
+    font: "Amatic SC",
+    textSize: "150px",
+    url: "images/examples/lighthouse.JPG",
+    credit: "Photo by Jeffrey Czum from Pexels"
   }),
   (pic4 = {
-    albumId: 1,
-    id: 4,
-    title: "アレクス・Kyoto",
-    url: "images/img4.JPG"
+    albumId: "ex",
+    id: 3,
+    message: "Neon / Future",
+    frameColor: "#20141f",
+    textColor: "#5ff2e4",
+    borderColor: "#5ff2e4",
+    borderWidth: 4,
+    font: "Amatic SC",
+    textSize: "150px",
+    url: "images/examples/vending.JPG",
+    credit: "Photo by Aleksandar Pasaric from Pexels"
   }),
   (pic5 = {
-    albumId: 1,
-    id: 5,
-    title: "ジェシ・Kyoto",
-    url: "images/img5.JPG"
+    albumId: "ex",
+    id: 4,
+    message: "Stay Frosty",
+    frameColor: "#090e12",
+    textColor: "#b89fff",
+    borderColor: "#72f3e7",
+    borderWidth: 4,
+    font: "Permanent Marker",
+    textSize: "150px",
+    url: "images/examples/celebration-colored-smoke.JPG",
+    credit: "Photo by Ali Müftüoğulları from Pexels"
   }),
   (pic6 = {
-    albumId: 1,
-    id: 6,
-    title: "ダビド・Kyoto",
-    url: "images/img6.JPG"
+    albumId: "ex",
+    id: 5,
+    message: "the trees, ablaze",
+    frameColor: "#fff",
+    textColor: "#bf3027",
+    borderColor: "#bf3027",
+    borderWidth: 0,
+    font: "Sue Ellen Francisco",
+    textSize: "110px",
+    url: "images/examples/leaves.JPG",
+    credit: "Photo by Thomas from Pexels"
   }),
   (pic7 = {
-    albumId: 1,
-    id: 7,
-    title: "浅草・Tokyo",
-    url: "images/img7.JPG"
+    albumId: "ex",
+    id: 6,
+    message: "Asakusa・Tokyo",
+    frameColor: "#3d3f52",
+    textColor: "#fe0e3d",
+    borderColor: "#fe0e3d",
+    borderWidth: 3,
+    font: "Kaushan Script",
+    textSize: "100px",
+    url: "images/examples/asakusa.JPG",
+    credit: "Alex Moglia"
   }),
   (pic8 = {
-    albumId: 1,
-    id: 8,
-    title: "家族・Tokyo",
-    url: "images/img8.JPG"
-  }),
-  (pic9 = {
-    albumId: 1,
-    id: 9,
-    title: "力・Tokyo",
-    url: "images/img9.JPG"
+    albumId: "ex",
+    id: 7,
+    message: "#Precious #Pup",
+    frameColor: "#dcc5de",
+    textColor: "#fefefe",
+    borderColor: "#fefefe",
+    borderWidth: 5,
+    font: "Permanent Marker",
+    textSize: "150px",
+    url: "images/examples/pupperdoo.JPG",
+    credit: "Photo by Valeria Boltneva from Pexels"
   })
 ];
 
@@ -123,14 +173,17 @@ let exampleThumbsWrapper,
   ctx,
   icon,
   appName,
+  albumObject,
   selectedImage,
   frameColorDiv,
-  textColorDiv;
+  textColorDiv,
+  textField;
 let frameColor = "#090e12";
 let textColor = "#fff";
 let font = "Gloria Hallelujah";
 let message = "";
-// let uploadAlbum = [];
+let uploadThumbCounter = 0;
+const UPLOAD_ALBUM = [];
 
 window.onload = init;
 
@@ -140,17 +193,25 @@ function init() {
   appName = document.querySelector("#app-name"); // used in changeColor()
   uploadButton = document.querySelector("#file-input-label"); // used in uploadImages()
   uploadDetails = document.querySelector("#upload-details"); // used in toggleAlbums()
-  uploadThumbsWrapper = document.querySelector("#upload-thumbnail-div"); // used in displayThumbs(), uploadImages()
+  uploadThumbsWrapper = document.querySelector("#upload-thumbnail-div"); // used in displayExampleThumbs(), uploadImages()
   exampleDetails = document.querySelector("#example-details"); // used in toggleAlbums()
-  exampleThumbsWrapper = document.querySelector("#example-thumbnail-div"); // used in displayThumbs()
+  exampleThumbsWrapper = document.querySelector("#example-thumbnail-div"); // used in displayExampleThumbs()
   frameColorDiv = document.querySelector("#frame-color-div"); // used in displaySwatches()
   textColorDiv = document.querySelector("#text-color-div"); // used in displaySwatches()
+  textField = document.querySelector("#text-field");
 
-  // Toggles albums so only one can be open
+  // Toggles albums so only one can be open, based on Summary element found in Details element
   let summaries = document.querySelectorAll(".summary");
+  // Click Toggle
   summaries.forEach(summary =>
     summary.addEventListener("click", function(event) {
       toggleAlbums(event.target);
+    })
+  );
+  // Hover Toggle
+  summaries.forEach(summary =>
+    summary.addEventListener("mouseover", function(event) {
+      hoverAlbums(event.target.id);
     })
   );
 
@@ -160,15 +221,30 @@ function init() {
 
   // Functions
   displayCanvasInstructions();
-  displayThumbs(EXAMPLE_ALBUM, exampleThumbsWrapper);
+  displayExampleThumbs();
   displaySwatches(frameColorDiv);
   displaySwatches(textColorDiv);
 }
 
 // * Control Functions
 
+function hoverAlbums(id) {
+  hoveredArea = document.querySelector(`#${id}`).parentElement;
+  //? possible values for hoveredArea = [#example-details, #upload-details]
+  if (hoveredArea.id === "example-details") {
+    if (uploadDetails.hasAttribute("open")) {
+      uploadDetails.removeAttribute("open");
+    }
+    exampleDetails.setAttribute("open", "open");
+  } else if (hoveredArea.id === "upload-details") {
+    if (exampleDetails.hasAttribute("open")) {
+      exampleDetails.removeAttribute("open");
+    }
+    uploadDetails.setAttribute("open", "open");
+  }
+}
+
 function toggleAlbums(clickedAlbum) {
-  // TODO
   //? update to take in clicked button & array of possible buttons in section,
   //? thus allowing for us with controls section?
   if (clickedAlbum.id === "upload-summary") {
@@ -195,7 +271,25 @@ function uploadImages(files) {
     let file = files[i];
     let reader = new FileReader();
     reader.onload = function(event) {
+      // thumbObject is created to add to UPLOAD_ALBUM array so changes can be saved/retrieved
+      let thumbObject = {
+        albumId: "up",
+        id: uploadThumbCounter,
+        message: "",
+        frameColor: "#090e12",
+        textColor: "#fff",
+        borderColor: "#fff",
+        borderWidth: 3,
+        font: "Permanent Marker",
+        textSize: "100px",
+        url: `url('${event.target.result}')`
+      };
+      UPLOAD_ALBUM.push(thumbObject);
+
+      // div object - the visible thumbnail
       let thumb = document.createElement("div");
+      thumb.id = `thumb-up-${uploadThumbCounter}`;
+      uploadThumbCounter++;
       thumb.classList.add("thumb");
       thumb.style.backgroundImage = `url('${event.target.result}')`;
       thumb.alt = "";
@@ -216,14 +310,17 @@ function uploadImages(files) {
 
 function changeColor(value, divWrapper) {
   value += ""; // cast value as string
+  albumObject = findAlbumObject(selectedImage);
   if (divWrapper.id === "frame-color-div") {
     icon.style.color = value;
-    frameColor = value;
+    albumObject.frameColor = value;
+    console.log("Frame Color = " + value);
     canvasImage(selectedImage);
   } else {
-    textColor = value;
+    albumObject.textColor = value;
     appName.style.color = value;
     icon.style.background = value;
+    console.log("Text Color = " + value);
     if (selectedImage) {
       canvasImage(selectedImage);
     } else {
@@ -233,7 +330,8 @@ function changeColor(value, divWrapper) {
 }
 
 function changeFont(value) {
-  font = value + "";
+  albumObject = findAlbumObject(selectedImage);
+  albumObject.font = value + "";
   appName.style.fontFamily = `'${value + ""}', cursive`;
   if (selectedImage) {
     canvasImage(selectedImage);
@@ -243,10 +341,9 @@ function changeFont(value) {
 }
 
 function changeText(value) {
-  if (value !== "") {
-    selectedImage.alt = value;
-    canvasImage(selectedImage);
-  }
+  albumObject = findAlbumObject(selectedImage);
+  albumObject.message = value;
+  canvasImage(selectedImage);
 }
 
 // TODO Change Font Size (& Location?) function
@@ -255,21 +352,22 @@ function changeText(value) {
 
 // * Main Functions
 
-function displayThumbs(album, wrapper) {
+function displayExampleThumbs() {
   // called from init()
-  album.forEach(function(currentImage) {
+  EXAMPLE_ALBUM.forEach(function(currentImage) {
     // Create thumbnail div elements
     let thumb = document.createElement("div");
+    thumb.id = `thumb-${currentImage.albumId}-${currentImage.id}`;
     thumb.classList.add("thumb");
     thumb.style.backgroundImage = `url('${currentImage.url}')`;
-    thumb.alt = currentImage.title;
+    thumb.alt = currentImage.message;
     // Event listener to draw clicked thumb to canvas
     thumb.addEventListener("click", function(event) {
       canvasImage(event.target);
       document.querySelector("#text-field").value = ""; // clears custom message input upon new image selected
     });
     // Append thumb to thumbnail div wrapper
-    wrapper.append(thumb);
+    exampleThumbsWrapper.append(thumb);
   });
 }
 
@@ -304,18 +402,32 @@ function displaySwatches(divWrapper) {
 }
 
 function canvasImage(div) {
+  // creates the image object to be drawn, then calls drawCanvasImage() & drawText()
   // called in event listeners on thumbs, in changeColor(), changeFont(), changeText()
   selectedImage = div; // for use in Control functions
+  albumObject = findAlbumObject(div);
+
   let imgObj = new Image();
   imgObj.src = div.style.backgroundImage.slice(5, -2); // strips url("  ")
   imgObj.onload = function() {
     setCanvasMaxSize();
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.save();
-    drawCanvasImage(imgObj);
-    drawText(div.alt);
+    drawCanvasImage(imgObj, albumObject);
+    drawText(albumObject);
     ctx.restore();
   };
+}
+
+function findAlbumObject(clickedImage) {
+  // called in canvasImg(), changeColor(), changeFont(), changeText()
+  let albumId = clickedImage.id.slice(6, 8);
+  let thumbId = clickedImage.id.slice(9);
+  if (albumId === "ex") {
+    return EXAMPLE_ALBUM[thumbId];
+  } else {
+    return UPLOAD_ALBUM[thumbId];
+  }
 }
 
 // * Canvas Functions
@@ -362,6 +474,12 @@ function displayCanvasInstructions() {
   message = "so make sure to save your favorites!";
   ctx.fillText(message, canvas.width / 2, canvas.height / 1.2);
 
+  // Canvas border
+
+  ctx.strokeStyle = "#222";
+  ctx.lineWidth = 5;
+  ctx.strokeRect(0, 0, canvas.width, canvas.height);
+
   ctx.restore();
 }
 
@@ -383,28 +501,28 @@ function setCanvasMaxSize() {
 
 // * Draw Image Functions
 
-function drawCanvasImage(imgObj) {
+function drawCanvasImage(imgObj, albumObject) {
   canvas.width = imgObj.width + 150;
   canvas.height = imgObj.height + 450; // acounts for "polaroid" spacing below picture
-  ctx.fillStyle = frameColor;
+  // draw frame
+  ctx.fillStyle = albumObject.frameColor;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
+  // draw image
   ctx.drawImage(imgObj, 75, 75);
-
-  //TODO inner border controls (lineWidth, on/off)
-  ctx.strokeStyle = textColor;
-  ctx.lineWidth = 3;
+  // draw image border
+  ctx.strokeStyle = albumObject.borderColor;
+  ctx.lineWidth = albumObject.borderWidth;
   ctx.strokeRect(75, 75, imgObj.width, imgObj.height);
 }
 
 // * Draw Text Function
 
-function drawText(alt) {
-  message = alt;
-  ctx.fillStyle = textColor;
-  ctx.font = `100px ${font}, cursive`;
+function drawText(albumObject) {
+  ctx.fillStyle = albumObject.textColor;
+  ctx.font = `${albumObject.textSize} ${albumObject.font}, cursive`;
   ctx.textAlign = "center";
   ctx.fillText(
-    message,
+    albumObject.message,
     canvas.width / 2,
     canvas.height - 150 // places text in polaroid area below picture
   );

@@ -14,7 +14,7 @@ body {
   /* background: url("images/patterns/papyrus-dark.png"); */
   /* background: url("images/patterns/pink\ dust.png"); */
   background: url("images/patterns/darkness.png");
-  opacity: 0.4;
+  opacity: 0.5;
   position: absolute;
   top: 0;
   left: 0;
@@ -23,15 +23,15 @@ body {
   z-index: -1;
 }
 
-a {
-  text-decoration: none;
-}
-
 #app-wrapper {
   display: grid;
   grid-template-columns: 310px 1fr 310px;
   grid-template-rows: 50px 75vh 1fr;
   grid-gap: 1.5rem;
+}
+
+a {
+  text-decoration: none;
 }
 
 .material-icons {
@@ -88,10 +88,8 @@ h1 {
 }
 
 #file-input-label:hover {
+  /* Upload button styling */
   cursor: pointer;
-  /* ! */
-  /* color: #333;
-  background: #fff; */
   color: #111;
   background: #48d593;
 }
@@ -109,21 +107,23 @@ h1 {
   background: #111;
   border: 1px outset #fff;
   border-radius: 10px;
-  transition: color 250ms ease;
-  transition: background 250ms ease;
-  /* transition: height 500ms ease; */
+  /* transition: color 250ms ease-out;
+  transition: background 250ms ease-out;
+  transition: height 500ms ease-out; */
+  transition: all 500ms ease-out;
 }
 
 .details:hover {
   color: #111;
-  background: #929efa;
+  background: #fff;
 }
 
 .details:not([open]) {
-  /* height: 20%; */
+  height: 20%;
 }
+
 .details[open] {
-  /* height: 75vh; */
+  height: 75vh;
   overflow-y: scroll;
 }
 
@@ -139,24 +139,22 @@ h1 {
   margin-bottom: 0.5rem;
 }
 
-#upload-details:hover {
-  background: #629cf2;
-}
-
 .summary::-webkit-details-marker {
   /* list-style not supported by Chrome */
   display: none;
 }
 
 .summary:hover {
-  cursor: pointer;
+  /* hoverAlbums() function means no need for cursor pointer  */
+  cursor: default;
 }
 
 .thumbnail-class {
-  /* border: 1px solid white; */
   background: #444;
   display: flex;
   flex-flow: row wrap;
+  /* TODO set min height so when only a few images loaded, hover div isn't mostly white */
+  /* min-height: calc(75vh - (120px * 2)); */
 }
 
 .thumb {
@@ -176,13 +174,14 @@ h1 {
 /* * Canvas Section */
 
 #canvas-div {
-  justify-self: center;
+  place-self: center;
+  grid-row: 1 / 4;
 }
 
 #canvas {
   box-shadow: -15px 15px 15px, 15px 15px 15px;
   border-radius: 3px;
-  grid-row: 1 / 4;
+  /* grid-row: 1 / 4; */
   justify-self: center; /* grid property - grid applied on #app-wrapper */
 }
 
@@ -217,8 +216,8 @@ h1 {
 
 .swatch {
   border: 1px solid #333;
-  width: 2.2rem;
-  height: 2.2rem;
+  width: 2.1rem;
+  height: 2.1rem;
   margin: 0.1rem;
 }
 
