@@ -310,30 +310,39 @@ function uploadImages(files) {
 
 function changeColor(value, divWrapper) {
   value += ""; // cast value as string
-  albumObject = findAlbumObject(selectedImage);
-  if (divWrapper.id === "frame-color-div") {
-    icon.style.color = value;
-    albumObject.frameColor = value;
-    console.log("Frame Color = " + value);
+  if (selectedImage) {
+    // if an image has been selected...
+    albumObject = findAlbumObject(selectedImage);
+    if (divWrapper.id === "frame-color-div") {
+      icon.style.color = value;
+      albumObject.frameColor = value;
+      console.log("Frame Color = " + value);
+    } else {
+      albumObject.textColor = value;
+      appName.style.color = value;
+      icon.style.background = value;
+      console.log("Text Color = " + value);
+    }
     canvasImage(selectedImage);
   } else {
-    albumObject.textColor = value;
-    appName.style.color = value;
-    icon.style.background = value;
-    console.log("Text Color = " + value);
-    if (selectedImage) {
-      canvasImage(selectedImage);
+    // if no image selected (still viewing canvas instructions)
+    if (divWrapper.id === "frame-color-div") {
+      icon.style.color = value;
+      console.log("Frame Color = " + value);
     } else {
-      displayCanvasInstructions(); // if no image loaded, change font color of Canvas Instructions
+      appName.style.color = value;
+      icon.style.background = value;
+      console.log("Text Color = " + value);
     }
+    displayCanvasInstructions(); // if no image loaded, change font color of Canvas Instructions
   }
 }
 
 function changeFont(value) {
-  albumObject = findAlbumObject(selectedImage);
-  albumObject.font = value + "";
   appName.style.fontFamily = `'${value + ""}', cursive`;
   if (selectedImage) {
+    albumObject = findAlbumObject(selectedImage);
+    albumObject.font = value + "";
     canvasImage(selectedImage);
   } else {
     displayCanvasInstructions(); // if no image loaded, change font family of Canvas Instructions
@@ -341,9 +350,11 @@ function changeFont(value) {
 }
 
 function changeText(value) {
-  albumObject = findAlbumObject(selectedImage);
-  albumObject.message = value;
-  canvasImage(selectedImage);
+  if (selectedImage) {
+    albumObject = findAlbumObject(selectedImage);
+    albumObject.message = value;
+    canvasImage(selectedImage);
+  }
 }
 
 // TODO Change Font Size (& Location?) function
