@@ -9,7 +9,7 @@ const EXAMPLE_ALBUM = [
     borderWidth: 1,
     font: "Gloria Hallelujah",
     textSize: "120px",
-    url: "images/examples/bonfire.JPG",
+    url: "images/example/bonfire.JPG",
     credit: "Photo by Vlad Bagacian from Pexels"
   }),
   (pic2 = {
@@ -22,7 +22,7 @@ const EXAMPLE_ALBUM = [
     borderWidth: 3,
     font: "Berkshire Swash",
     textSize: "150px",
-    url: "images/examples/abaya-abu.JPG",
+    url: "images/example/abaya-abu.JPG",
     credit: "Photo by Oliver Sjöström from Pexels"
   }),
   (pic3 = {
@@ -35,7 +35,7 @@ const EXAMPLE_ALBUM = [
     borderWidth: 15,
     font: "Amatic SC",
     textSize: "150px",
-    url: "images/examples/lighthouse.JPG",
+    url: "images/example/lighthouse.JPG",
     credit: "Photo by Jeffrey Czum from Pexels"
   }),
   (pic4 = {
@@ -48,7 +48,7 @@ const EXAMPLE_ALBUM = [
     borderWidth: 4,
     font: "Amatic SC",
     textSize: "150px",
-    url: "images/examples/vending.JPG",
+    url: "images/example/vending.JPG",
     credit: "Photo by Aleksandar Pasaric from Pexels"
   }),
   (pic5 = {
@@ -61,7 +61,7 @@ const EXAMPLE_ALBUM = [
     borderWidth: 4,
     font: "Permanent Marker",
     textSize: "150px",
-    url: "images/examples/celebration-colored-smoke.JPG",
+    url: "images/example/celebration-colored-smoke.JPG",
     credit: "Photo by Ali Müftüoğulları from Pexels"
   }),
   (pic6 = {
@@ -74,7 +74,7 @@ const EXAMPLE_ALBUM = [
     borderWidth: 0,
     font: "Sue Ellen Francisco",
     textSize: "110px",
-    url: "images/examples/leaves.JPG",
+    url: "images/example/leaves.JPG",
     credit: "Photo by Thomas from Pexels"
   }),
   (pic7 = {
@@ -87,7 +87,7 @@ const EXAMPLE_ALBUM = [
     borderWidth: 3,
     font: "Kaushan Script",
     textSize: "100px",
-    url: "images/examples/asakusa.JPG",
+    url: "images/example/asakusa.JPG",
     credit: "Alex Moglia"
   }),
   (pic8 = {
@@ -100,7 +100,7 @@ const EXAMPLE_ALBUM = [
     borderWidth: 5,
     font: "Permanent Marker",
     textSize: "150px",
-    url: "images/examples/pupperdoo.JPG",
+    url: "images/example/pupperdoo.JPG",
     credit: "Photo by Valeria Boltneva from Pexels"
   })
 ];
