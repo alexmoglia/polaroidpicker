@@ -55,31 +55,41 @@
 
       <!-- Canvas -->
       <div id="canvas-div">
-        <!-- <canvas id="canvas" width="650" height="650"></canvas> -->
         <canvas id="canvas" width="800" height="800"></canvas>
       </div>
 
       <!-- Controls -->
       <section id="controls-section" class="section">
-        <!-- Frame Color -->
-        <div id="frame-color-div" class="control-class">
-          <p class="input-p">Frame color</p>
-        </div>
-
-        <!-- Text Color -->
-        <div id="text-color-div" class="control-class">
-          <p class="input-p">Text color</p>
+        <div id="color-wrapper">
+          <!-- Span Div -->
+          <div id="span-div">
+            <span id="frame-color-span">Frame</span>
+            <span id="text-color-span">Text</span>
+            <span id="border-color-span">Border</span>
+          </div>
+          <!-- Frame Color -->
+          <div id="frame-color-div" class="color-control-class"></div>
+          <!-- Text Color -->
+          <div
+            id="text-color-div"
+            class="color-control-class display-none"
+          ></div>
+          <!-- Border Color -->
+          <div
+            id="border-color-div"
+            class="color-control-class display-none"
+          ></div>
         </div>
 
         <!-- Font Family -->
+        <!-- TODO replace font with scrolling divs displaying fonts -->
+
         <div id="font-div" class="control-class">
           <p class="input-p">Font</p>
-          <select id="font" oninput="changeFont(this.value)">
+          <select id="font-input">
             <option value="Amatic SC">Amatic SC</option>
             <option value="Berkshire Swash">Berkshire Swash</option>
-            <option value="Gloria Hallelujah" selected
-              >Gloria Hallelujah</option
-            >
+            <option value="Gloria Hallelujah">Gloria Hallelujah</option>
             <option value="Kaushan Script">Kaushan Script</option>
             <option value="Pacifico">Pacifico</option>
             <option value="Permanent Marker">Permanent Marker</option>

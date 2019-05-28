@@ -163,32 +163,26 @@ const COLOR_SWATCHES = [
   })
 ];
 
-let exampleThumbsWrapper,
-  uploadThumbsWrapper,
+let icon,
+  appName,
   uploadButton,
   uploadDetails,
+  uploadThumbsWrapper,
   exampleDetails,
-  preview,
-  canvas,
-  ctx,
-  icon,
-  appName,
-  albumObject,
-  selectedImage,
+  exampleThumbsWrapper,
   frameColorDiv,
   textColorDiv,
-  textField;
-let frameColor = "#090e12";
-let textColor = "#fff";
-let font = "Gloria Hallelujah";
-let message = "";
-let uploadThumbCounter = 0;
-const UPLOAD_ALBUM = [];
+  borderColorDiv,
+  fontField,
+  textField,
+  canvas,
+  ctx,
+  albumObject,
+  selectedImage;
 
 window.onload = init;
-
 function init() {
-  // Query Selectors
+  // * Query Selectors
   icon = document.querySelector(".material-icons"); // used in changeColor()
   appName = document.querySelector("#app-name"); // used in changeColor()
   uploadButton = document.querySelector("#file-input-label"); // used in uploadImages()
@@ -198,51 +192,52 @@ function init() {
   exampleThumbsWrapper = document.querySelector("#example-thumbnail-div"); // used in displayExampleThumbs()
   frameColorDiv = document.querySelector("#frame-color-div"); // used in displaySwatches()
   textColorDiv = document.querySelector("#text-color-div"); // used in displaySwatches()
+  borderColorDiv = document.querySelector("#border-color-div"); // used in displaySwatches()
+  fontField = document.querySelector("#font-input"); // ued in changeFont()
   textField = document.querySelector("#text-field");
 
+  // * Event Listeners
   // Toggles albums so only one can be open, based on Summary element found in Details element
-  let summaries = document.querySelectorAll(".summary");
+  const SUMMARIES = document.querySelectorAll(".summary");
   // Click Toggle
-  summaries.forEach(summary =>
+  SUMMARIES.forEach(summary =>
     summary.addEventListener("click", function(event) {
       toggleAlbums(event.target);
     })
   );
   // Hover Toggle
-  summaries.forEach(summary =>
+  SUMMARIES.forEach(summary =>
     summary.addEventListener("mouseover", function(event) {
+      // hover on Summary, need Details, thus pass id for processing in hoverAlbums()
       hoverAlbums(event.target.id);
     })
   );
 
-  // Canvas
+  const COLOR_CONTROLS = document.querySelectorAll("#span-div span");
+  COLOR_CONTROLS.forEach(tab =>
+    tab.addEventListener("mouseover", function(event) {
+      hoverColorTab(event.target);
+    })
+  );
+
+  // font Event Listener
+  fontField.addEventListener("input", function(event) {
+    changeFont(this.value);
+  });
+
+  // * Canvas
   canvas = document.querySelector("#canvas");
   ctx = canvas.getContext("2d");
 
-  // Functions
+  // * Function Calls
   displayCanvasInstructions();
   displayExampleThumbs();
   displaySwatches(frameColorDiv);
   displaySwatches(textColorDiv);
+  displaySwatches(borderColorDiv);
 }
 
-// * Control Functions
-
-function hoverAlbums(id) {
-  hoveredArea = document.querySelector(`#${id}`).parentElement;
-  //? possible values for hoveredArea = [#example-details, #upload-details]
-  if (hoveredArea.id === "example-details") {
-    if (uploadDetails.hasAttribute("open")) {
-      uploadDetails.removeAttribute("open");
-    }
-    exampleDetails.setAttribute("open", "open");
-  } else if (hoveredArea.id === "upload-details") {
-    if (exampleDetails.hasAttribute("open")) {
-      exampleDetails.removeAttribute("open");
-    }
-    uploadDetails.setAttribute("open", "open");
-  }
-}
+// * Hover/Toggle Control Functions
 
 function toggleAlbums(clickedAlbum) {
   //? update to take in clicked button & array of possible buttons in section,
@@ -262,6 +257,163 @@ function toggleAlbums(clickedAlbum) {
   }
 }
 
+function hoverAlbums(id) {
+  let hoveredAlbum = document.querySelector(`#${id}`).parentElement;
+  // possible values for hoveredAlbum = [#example-details, #upload-details]
+  if (hoveredAlbum.id === "example-details") {
+    if (uploadDetails.hasAttribute("open")) {
+      uploadDetails.removeAttribute("open");
+    }
+    exampleDetails.setAttribute("open", "open");
+  } else if (hoveredAlbum.id === "upload-details") {
+    if (exampleDetails.hasAttribute("open")) {
+      exampleDetails.removeAttribute("open");
+    }
+    uploadDetails.setAttribute("open", "open");
+  }
+}
+
+function hoverColorTab(hoveredTab) {
+  const COLOR_CONTROLS = document.querySelectorAll("#span-div span");
+  COLOR_CONTROLS.forEach(function(span) {
+    span.style.color = "#fff";
+    span.style.backgroundColor = "#111";
+  });
+  hoveredTab.style.color = "#111";
+  hoveredTab.style.backgroundColor = "#fff";
+
+  const COLOR_DIVS = document.querySelectorAll(".color-control-class");
+  COLOR_DIVS.forEach(div => div.classList.add("display-none"));
+
+  // idClip uses regex to extract the first word in the hoveredTab's id (stops at first dash character)
+  let idClip = hoveredTab.id.match(/(\w*)/)[0]; // possible values - 'frame', 'text', 'border'
+  let targetColorDiv = document.querySelector(`#${idClip}-color-div`);
+  targetColorDiv.classList.remove("display-none");
+  targetColorDiv.style.backgroundColor = "#fff";
+}
+
+// * Canvas Control Functions
+
+function changeColor(colorValue, selectedSwatch, divWrapper) {
+  // called by event listeners on swatches (which are created in displaySwatches())
+  colorValue += ""; // cast colorValue as string
+
+  // applies black border to all swatches, then white border to selected swatch
+  let allSwatches = document.querySelectorAll("#" + divWrapper.id + " div");
+  allSwatches.forEach(swatch => (swatch.style.borderColor = "#111"));
+  let customSwatch = document.querySelector("#" + divWrapper.id + " input");
+  customSwatch.style.borderColor = "#111";
+  selectedSwatch.style.borderColor = "#FF0000";
+
+  // apply color change to logo
+  if (divWrapper.id === "frame-color-div") {
+    icon.style.background = colorValue;
+    console.log("Logo Frame Color = " + colorValue);
+  } else if (divWrapper.id === "text-color-div") {
+    appName.style.color = colorValue;
+    console.log("Logo Text Color = " + colorValue);
+  } else {
+    icon.style.color = colorValue;
+  }
+  // apply color change to canvas if an image is selected
+  if (selectedImage) {
+    albumObject = findAlbumObject(selectedImage);
+    if (divWrapper.id === "frame-color-div") {
+      albumObject.frameColor = colorValue;
+      console.log("Canvas Frame Color = " + colorValue);
+    } else if (divWrapper.id === "text-color-div") {
+      albumObject.textColor = colorValue;
+      console.log("Canvas Text Color = " + colorValue);
+    } else {
+      albumObject.borderColor = colorValue;
+    }
+    canvasImage(selectedImage);
+  }
+}
+
+function changeFont(value) {
+  appName.style.fontFamily = `'${value + ""}', cursive`;
+  if (selectedImage) {
+    // if an image has been selected...
+    albumObject = findAlbumObject(selectedImage);
+    albumObject.font = value + "";
+    canvasImage(selectedImage);
+  } else {
+    // if no image selected (still viewing canvas instructions)...
+    displayCanvasInstructions(value); // if no image loaded, change font family of Canvas Instructions
+  }
+}
+
+function changeText(value) {
+  if (selectedImage) {
+    albumObject = findAlbumObject(selectedImage);
+    albumObject.message = value;
+    canvasImage(selectedImage);
+  }
+}
+
+// TODO Change Font Size (& Location?) function
+
+// TODO Picture Border function (color, on/off, width) - add to changeColor()
+
+// * Main Functions
+
+function displayExampleThumbs() {
+  // called from init()
+  EXAMPLE_ALBUM.forEach(function(currentImage) {
+    // Create thumbnail div elements
+    let thumb = document.createElement("div");
+    thumb.id = `thumb-${currentImage.albumId}-${currentImage.id}`;
+    thumb.classList.add("thumb");
+    thumb.style.backgroundImage = `url('${currentImage.url}')`;
+    thumb.alt = currentImage.message;
+    // Event listener to draw clicked thumb to canvas
+    thumb.addEventListener("click", function(event) {
+      canvasImage(event.target);
+      document.querySelector("#text-field").value = ""; // clears custom message input upon new image selected
+    });
+    // Append thumb to thumbnail div wrapper
+    exampleThumbsWrapper.append(thumb);
+  });
+}
+
+function displaySwatches(divWrapper) {
+  // Called from init(), possible values are frameColorDiv, textColorDiv, or borderColorDiv
+  // Color swatch divs
+  COLOR_SWATCHES.forEach(function(currentSwatch) {
+    // Create swatch div elements
+    let swatch = document.createElement("div");
+    // swatch.id uses regex to extract the first word in the divWrapper id (stops at first dash character)
+    swatch.id = `swatch-${divWrapper.id.match(/(\w*)/)[0]}-${currentSwatch.id}`; // 'swatch-frame-1', 'swatch-text-1', 'swatch-border-1', etc.
+    swatch.classList.add("swatch");
+    swatch.style.background = currentSwatch.value;
+    swatch.alt = currentSwatch.name;
+    // Event listener to apply color to frame or text
+    swatch.addEventListener("click", function(event) {
+      // passes in selected color, the swatch div, and the wrapper (frameColorDiv, textColorDiv, or borderColorDiv)
+      changeColor(event.target.style.backgroundColor, event.target, divWrapper);
+    });
+    // Append swatch to divWrapper passed in to displaySwatches() (frameColorDiv, textColorDiv, or borderColorDiv)
+    divWrapper.append(swatch);
+  });
+
+  // Custom color picker input
+  let colorPicker = document.createElement("input");
+  colorPicker.type = "color";
+  colorPicker.id = `swatch-${divWrapper.id.match(/(\w*)/)[0]}-custom`; // 'swatch-frame-custom', 'swatch-text-custom', 'swatch-border-custom'
+  colorPicker.classList.add("swatch");
+  colorPicker.value = "#fff";
+  colorPicker.addEventListener("input", function(event) {
+    // passes in selected color, the swatch div, and the wrapper (frame or text wrappers)
+    changeColor(event.target.style.backgroundColor, event.target, divWrapper);
+  });
+  // Append colorPicker to divWrapper passed in to displaySwatches()
+  divWrapper.append(colorPicker);
+}
+
+// Upload Images
+let uploadThumbCounter = 0;
+const UPLOAD_ALBUM = [];
 function uploadImages(files) {
   uploadButton.classList.add("display-none"); // hide the original Upload button
   uploadDetails.classList.remove("display-none"); // show the "My Album" details/summary/div
@@ -297,7 +449,7 @@ function uploadImages(files) {
       // Event listener to draw clicked thumb to canvas
       thumb.addEventListener("click", function(event) {
         canvasImage(event.target);
-        document.querySelector("#text-field").value = ""; // clears custom message input upon new image selected
+        document.querySelector("#text-field").value = ""; // clears custom message input when new image selected
       });
 
       // Append thumb to thumbnail div wrapper
@@ -308,116 +460,14 @@ function uploadImages(files) {
   uploadDetails.setAttribute("open", "open"); // ensures "My Album" opens, even if Examples album is closed first
 }
 
-function changeColor(value, divWrapper) {
-  value += ""; // cast value as string
-  if (selectedImage) {
-    // if an image has been selected...
-    albumObject = findAlbumObject(selectedImage);
-    if (divWrapper.id === "frame-color-div") {
-      icon.style.color = value;
-      albumObject.frameColor = value;
-      console.log("Frame Color = " + value);
-    } else {
-      albumObject.textColor = value;
-      appName.style.color = value;
-      icon.style.background = value;
-      console.log("Text Color = " + value);
-    }
-    canvasImage(selectedImage);
-  } else {
-    // if no image selected (still viewing canvas instructions)
-    if (divWrapper.id === "frame-color-div") {
-      icon.style.color = value;
-      console.log("Frame Color = " + value);
-    } else {
-      appName.style.color = value;
-      icon.style.background = value;
-      console.log("Text Color = " + value);
-    }
-    displayCanvasInstructions(); // if no image loaded, change font color of Canvas Instructions
-  }
-}
-
-function changeFont(value) {
-  appName.style.fontFamily = `'${value + ""}', cursive`;
-  if (selectedImage) {
-    albumObject = findAlbumObject(selectedImage);
-    albumObject.font = value + "";
-    canvasImage(selectedImage);
-  } else {
-    displayCanvasInstructions(); // if no image loaded, change font family of Canvas Instructions
-  }
-}
-
-function changeText(value) {
-  if (selectedImage) {
-    albumObject = findAlbumObject(selectedImage);
-    albumObject.message = value;
-    canvasImage(selectedImage);
-  }
-}
-
-// TODO Change Font Size (& Location?) function
-
-// TODO Picture Border function (color, on/off, width)
-
-// * Main Functions
-
-function displayExampleThumbs() {
-  // called from init()
-  EXAMPLE_ALBUM.forEach(function(currentImage) {
-    // Create thumbnail div elements
-    let thumb = document.createElement("div");
-    thumb.id = `thumb-${currentImage.albumId}-${currentImage.id}`;
-    thumb.classList.add("thumb");
-    thumb.style.backgroundImage = `url('${currentImage.url}')`;
-    thumb.alt = currentImage.message;
-    // Event listener to draw clicked thumb to canvas
-    thumb.addEventListener("click", function(event) {
-      canvasImage(event.target);
-      document.querySelector("#text-field").value = ""; // clears custom message input upon new image selected
-    });
-    // Append thumb to thumbnail div wrapper
-    exampleThumbsWrapper.append(thumb);
-  });
-}
-
-function displaySwatches(divWrapper) {
-  // Called from init()
-
-  // Color swatch divs
-  COLOR_SWATCHES.forEach(function(currentSwatch) {
-    // Create swatch div elements
-    let swatch = document.createElement("div");
-    swatch.classList.add("swatch");
-    swatch.style.background = currentSwatch.value;
-    swatch.alt = currentSwatch.name;
-    // Event listener to apply color to frame or text
-    swatch.addEventListener("click", function(event) {
-      changeColor(event.target.style.backgroundColor, divWrapper);
-    });
-    // Append swatch to divWrapper passed in to displaySwatches()
-    divWrapper.append(swatch);
-  });
-
-  // Custom color picker input
-  let colorPicker = document.createElement("input");
-  colorPicker.type = "color";
-  colorPicker.classList.add("swatch");
-  colorPicker.value = "#fff";
-  colorPicker.addEventListener("input", function(event) {
-    changeColor(event.target.value, divWrapper);
-  });
-  // Append colorPicker to divWrapper passed in to displaySwatches()
-  divWrapper.append(colorPicker);
-}
-
 function canvasImage(div) {
-  // creates the image object to be drawn, then calls drawCanvasImage() & drawText()
   // called in event listeners on thumbs, in changeColor(), changeFont(), changeText()
+  // creates the image object to be drawn, then calls drawCanvasImage() & drawText()
   selectedImage = div; // for use in Control functions
   albumObject = findAlbumObject(div);
+  setControlValues(albumObject);
 
+  // create image object from div's background image url, pass to drawCanvasImage()
   let imgObj = new Image();
   imgObj.src = div.style.backgroundImage.slice(5, -2); // strips url("  ")
   imgObj.onload = function() {
@@ -441,24 +491,56 @@ function findAlbumObject(clickedImage) {
   }
 }
 
+function setControlValues(albumObject) {
+  // TODO update selected swatches when image canved
+  // ! some color values are rgb so need to assign swatch info to album object and use that to set defaults
+  // let tempFrameObj = {
+  //   name: "frame",
+  //   value: albumObject.frameColor
+  // };
+  // let tempTextObj = {
+  //   name: "text",
+  //   value: albumObject.textColor
+  // };
+  // console.log(tempFrameObj);
+  // let values = [tempFrameObj, tempTextObj];
+  // let index;
+  // values.forEach(function(tempObj) {
+  //   COLOR_SWATCHES.forEach(color =>
+  //     color.value === tempObj.value ? (index = color.id) : (index = "custom")
+  //   );
+  //   console.log(index);
+  //   let setSwatch = document.querySelector(`#swatch-${tempObj.name}-${index}`);
+  //   setSwatch.style.borderColor = "#FF0000";
+  // });
+  // TODO
+  // TODO update selected font when image canvased
+  // let allOptions = document.querySelectorAll("option");
+  // allOptions.forEach(option => option.setAttribute("selected", false));
+  // let setOption = document.querySelector(`option[value="${albumObject.font}"`);
+  // setOption.setAttribute("selected", "selected");
+  // console.log(setOption);
+  // TODO
+}
+
 // * Canvas Functions
 
-function displayCanvasInstructions() {
+function displayCanvasInstructions(font) {
   setCanvasMaxSize();
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.save();
-  const INSTRUCTIONS_FONT = font;
-  ctx.font = `50px ${INSTRUCTIONS_FONT}, cursive`;
+  const INSTRUCTIONS_FONT = "Gloria Hallelujah";
 
   // Welcome message
-  ctx.fillStyle = textColor;
   let message = "Welcome to Polaroid Picker!";
+  ctx.font = `50px ${INSTRUCTIONS_FONT}, cursive`; // welcome message is 50px
+  ctx.fillStyle = "#fff";
   ctx.textAlign = "center";
   ctx.fillText(message, canvas.width / 2, 125);
 
   // Thumbs message
   message = "< Upload some images or";
-  ctx.font = `30px ${INSTRUCTIONS_FONT}, cursive`;
+  ctx.font = `30px ${INSTRUCTIONS_FONT}, cursive`; // remaining text is 30px
   ctx.fillStyle = "#a8e6cf";
   ctx.textAlign = "left";
   ctx.fillText(message, 30, canvas.height / 3.3);

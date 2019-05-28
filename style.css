@@ -98,10 +98,6 @@ h1 {
   display: none;
 }
 
-.display-none {
-  display: none;
-}
-
 .details {
   color: #fff;
   background: #111;
@@ -110,7 +106,7 @@ h1 {
   /* transition: color 250ms ease-out;
   transition: background 250ms ease-out;
   transition: height 500ms ease-out; */
-  transition: all 300ms ease-out;
+  transition: all 500ms ease-out;
 }
 
 .details:hover {
@@ -190,14 +186,85 @@ h1 {
 #controls-section {
   color: white;
   box-shadow: 10px 10px 10px #111;
-  display: grid;
-  grid-template-rows: repeat(1fr, 4);
-  justify-content: center;
-  align-items: center;
+  display: flex;
+  flex-flow: column nowrap;
+  overflow: hidden;
+  justify-content: space-between;
+  position: relative;
 
-  /* grid properties applied to this section - from grid applied to #app-wrapper */
+  /* grid property applied TO this section - from grid applied to #app-wrapper */
   grid-column: 3 / 4;
-  /* justify-self: right; */
+}
+
+#color-wrapper {
+  margin: 0.2rem;
+  min-height: 10rem;
+}
+
+#span-div {
+  display: flex;
+  flex-flow: row nowrap;
+  font-size: 1.4rem;
+}
+
+span {
+  color: #fff;
+  background: #111;
+  border: 1px solid #fff;
+  /* border-top-right-radius: 12px;
+  border-top-left-radius: 0px; */
+  border-bottom: none;
+  text-align: center;
+  width: 33.3%;
+}
+
+span:hover {
+  color: #111;
+  background: #fff;
+  cursor: default;
+}
+
+#frame-color-span {
+  background: #fff;
+  color: #111;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 12px;
+}
+#text-color-span {
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+#border-color-span {
+  border-top-left-radius: 12px;
+  border-top-right-radius: 4px;
+}
+
+#frame-color-span:hover {
+  /* background: #48d593; */
+}
+
+#text-color-span:hover {
+  /* background: #4887d5; */
+}
+
+#border-color-span:hover {
+  /* background: #c765cb; */
+}
+
+.color-control-class {
+  border: 1px solid #fff;
+  background: #fff;
+  border-top: none;
+  border-radius: 15px;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+  padding: 1.2rem;
+  display: flex;
+  flex-flow: row wrap;
+  margin-right: 0.9rem;
+  position: absolute;
+  left: 10;
+  top: 10;
 }
 
 .control-class {
@@ -212,17 +279,17 @@ h1 {
   position: relative;
   min-height: 1.2rem;
   max-height: 4rem;
+  display: block;
 }
 
 .swatch {
-  border: 1px solid #333;
+  border: 1px solid #111;
   width: 2.1rem;
   height: 2.1rem;
   margin: 0.1rem;
 }
 
 .swatch:hover {
-  border: 1px solid #fff;
   cursor: pointer;
 }
 
@@ -234,17 +301,12 @@ input[type="color"]:hover {
   position: absolute;
 }
 
-#frame-color-div p,
-#text-color-div p {
-  bottom: 85px;
-}
-
 #font-div p,
 #text-div p {
   bottom: 40px;
 }
 
-#font {
+#font-input {
   font-size: 1.2rem;
   width: 80%;
   position: absolute;
@@ -275,4 +337,9 @@ footer {
   padding-top: 0.1rem;
   padding-right: 1rem;
   padding-bottom: 0.1rem;
+}
+
+/* Display None - at bottom so inherited when loaded*/
+.display-none {
+  display: none;
 }
