@@ -16,16 +16,9 @@ Canvas:
 
 Controls:
 
-- selected image's values are applied to controls
-- Border controls (color, thickness, on/off)
-- Font size / location / orientation
-- Font type as buttons with font example rather than dropdown list
+- Font location / orientation
 - Resize function
 - Rotate funtion
-
-Controls Style:
-
-- Thumbs section style collapsing, hover color/transition
 
 Save/Download Section
 

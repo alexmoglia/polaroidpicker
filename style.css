@@ -1,3 +1,5 @@
+/* *** General Styling *** */
+
 html {
   background: #333;
   box-sizing: border-box;
@@ -9,10 +11,14 @@ body {
   font-family: "Berkshire Swash", serif;
 }
 
+p {
+  cursor: default;
+}
+
 #background-div {
   /* Background pattern from Toptal Subtle Patterns */
-  /* background: url("images/patterns/papyrus-dark.png"); */
-  /* background: url("images/patterns/pink\ dust.png"); */
+  /* background: url("images/patterns/papyrus-dark.png");
+  background: url("images/patterns/pink\ dust.png"); */
   background: url("images/patterns/darkness.png");
   opacity: 0.5;
   position: absolute;
@@ -30,6 +36,7 @@ body {
   grid-gap: 1.5rem;
 }
 
+/* Header/Logo Section */
 a {
   text-decoration: none;
 }
@@ -55,6 +62,7 @@ h1 {
   top: 5px;
 }
 
+/* Thumb & Control Section general styling */
 .section {
   padding: 0.7rem;
   background: #111;
@@ -64,7 +72,7 @@ h1 {
   min-width: 280px;
 }
 
-/* * Thumbnail Section */
+/* *** Thumbnail Section *** */
 
 #thumbnail-section {
   display: flex;
@@ -74,6 +82,7 @@ h1 {
   box-shadow: -10px 10px 10px #111;
 }
 
+/* Upload Button  elements */
 #file-input-label {
   color: #fff;
   background: #111;
@@ -98,13 +107,14 @@ h1 {
   display: none;
 }
 
+/* My Album & Examples */
 .details {
   color: #fff;
   background: #111;
   border: 1px outset #fff;
   border-radius: 10px;
-  /* transition: color 250ms ease-out;
-  transition: background 250ms ease-out;
+  /* transition: color 500ms ease-out;
+  transition: background 500ms ease-out;
   transition: height 500ms ease-out; */
   transition: all 500ms ease-out;
 }
@@ -131,10 +141,6 @@ h1 {
   padding: 2rem;
 }
 
-#upload-details {
-  margin-bottom: 0.5rem;
-}
-
 .summary::-webkit-details-marker {
   /* list-style not supported by Chrome */
   display: none;
@@ -145,12 +151,18 @@ h1 {
   cursor: default;
 }
 
+#upload-details {
+  margin-bottom: 0.5rem;
+}
+
 .thumbnail-class {
+  /* Thumbnail div wrappers */
   background: #444;
   display: flex;
   flex-flow: row wrap;
+  flex-basis: 2.2rem;
+
   /* TODO set min height so when only a few images loaded, hover div isn't mostly white */
-  /* min-height: calc(75vh - (120px * 2)); */
 }
 
 .thumb {
@@ -167,7 +179,7 @@ h1 {
   cursor: pointer;
 }
 
-/* * Canvas Section */
+/* *** Canvas Section *** */
 
 #canvas-div {
   place-self: center;
@@ -181,7 +193,7 @@ h1 {
   justify-self: center; /* grid property - grid applied on #app-wrapper */
 }
 
-/* * Controls Section */
+/* *** Controls Section *** */
 
 #controls-section {
   color: white;
@@ -196,37 +208,47 @@ h1 {
   grid-column: 3 / 4;
 }
 
+/*  Color Controls */
+
 #color-wrapper {
   margin: 0.2rem;
-  min-height: 10rem;
 }
 
-#span-div {
+/* Large Selected Color Swatches */
+#large-swatch-wrapper {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.4rem;
+}
+
+.large-swatch-div {
+  border: 1px solid #444;
+  background: #111;
+  height: 1.2rem;
+  width: 5.3rem;
+}
+
+/* Color Spans (Frame, Text, Border) */
+#color-span-div {
+  /* Div wrapper of spans */
   display: flex;
   flex-flow: row nowrap;
   font-size: 1.4rem;
 }
 
-span {
+#color-span-div span {
   color: #fff;
   background: #111;
   border: 1px solid #fff;
-  /* border-top-right-radius: 12px;
-  border-top-left-radius: 0px; */
-  border-bottom: none;
   text-align: center;
   width: 33.3%;
 }
 
-span:hover {
-  color: #111;
-  background: #fff;
-  cursor: default;
+#color-span-div span:hover {
+  cursor: pointer;
 }
 
 #frame-color-span {
-  background: #fff;
-  color: #111;
   border-top-left-radius: 4px;
   border-top-right-radius: 12px;
 }
@@ -239,21 +261,10 @@ span:hover {
   border-top-right-radius: 4px;
 }
 
-#frame-color-span:hover {
-  /* background: #48d593; */
-}
-
-#text-color-span:hover {
-  /* background: #4887d5; */
-}
-
-#border-color-span:hover {
-  /* background: #c765cb; */
-}
-
 .color-control-class {
+  /* Swatch div wrappers (frame, text, border) */
   border: 1px solid #fff;
-  background: #fff;
+  background: #444;
   border-top: none;
   border-radius: 15px;
   border-top-right-radius: 0;
@@ -261,27 +272,87 @@ span:hover {
   padding: 1.2rem;
   display: flex;
   flex-flow: row wrap;
-  margin-right: 0.9rem;
-  position: absolute;
-  left: 10;
-  top: 10;
 }
 
-.control-class {
-  /* border: 1px solid red; */
-  border-radius: 15px;
-  font-size: 1.5rem;
-  text-align: right;
-  padding: 2.5rem 1.2rem;
-  background: #444;
+/* Border On/Off Switch & Width */
+#border-wrapper {
   display: flex;
-  flex-flow: row wrap;
-  position: relative;
-  min-height: 1.2rem;
-  max-height: 4rem;
-  display: block;
+  place-items: center;
+  margin-top: 0.5rem;
+  order: 1; /* places wrapper at end of flex box (applied from color-control-class */
 }
 
+.border-span-class {
+  font-size: 1.2rem;
+}
+
+#border-switch-controls-wrapper {
+  padding-top: 0.5rem;
+  padding-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+#border-switch-controls-wrapper span {
+  font-size: 1.25rem;
+  position: absolute;
+  top: 2%;
+  z-index: 2;
+}
+
+#border-switch-on-span {
+  left: 11%;
+}
+
+#border-switch-off-span {
+  right: 11%;
+}
+
+#border-switch-capsule {
+  border: 0.15rem solid #222;
+  background: #48d593;
+  width: 4rem;
+  height: 2rem;
+  border-radius: 1.3rem;
+  position: relative;
+  z-index: 1;
+  box-shadow: 5px 5px 5px #111;
+}
+
+#border-switch-ball {
+  border: 0.1rem solid #222;
+  background: #fff;
+  height: 1.9rem;
+  width: 1.9rem;
+  margin: 0;
+  border-radius: 100%;
+  position: absolute;
+  top: -1%;
+  right: 0%;
+  z-index: 3;
+}
+
+#border-switch-ball:hover {
+  cursor: pointer;
+}
+
+#border-range-span {
+  padding-right: 0.5rem;
+}
+
+#border-range-wrapper {
+  background: #666;
+  border: 1px solid #999;
+  border-radius: 5rem;
+  box-shadow: 5px 5px 5px #111;
+  padding: 0.3rem 0.8rem 0 0.5rem;
+}
+
+#border-range-input {
+  width: 100%;
+  cursor: pointer;
+}
+
+/* Swatches */
 .swatch {
   border: 1px solid #111;
   width: 2.1rem;
@@ -291,35 +362,115 @@ span:hover {
 
 .swatch:hover {
   cursor: pointer;
+  border: 1px solid #fff;
+}
+
+.swatch-selected {
+  border: 1px solid #ff0000;
 }
 
 input[type="color"]:hover {
   cursor: pointer;
 }
 
-.input-p {
-  position: absolute;
+/* Font Controls */
+#font-wrapper {
+  border: 1px solid #fff;
+  background: #444;
+  padding: 1rem;
+  border-radius: 15px;
+  min-height: 20vh;
+  max-height: 35vh;
+  overflow-y: scroll;
 }
 
-#font-div p,
-#text-div p {
-  bottom: 40px;
+#font-title {
+  font-size: 2rem;
+  margin: 0;
+  margin-bottom: 0.5rem;
+  display: inline-block;
+}
+
+#font-size-wrapper {
+  background: #666;
+  border: 1px solid #999;
+  border-radius: 5rem;
+  box-shadow: 5px 5px 5px #111;
+  padding: 0.3rem 0.8rem 0 0.5rem;
+  margin-bottom: 1rem;
+  position: relative;
+  top: 0.2rem;
+  right: -7%;
+  display: inline-block;
+}
+
+#font-range-input {
+  width: 100%;
+  cursor: pointer;
 }
 
 #font-input {
-  font-size: 1.2rem;
-  width: 80%;
-  position: absolute;
-  left: 10%;
-  margin: 0.2rem 0;
+  display: flex;
+  flex-flow: column nowrap;
+  font-size: 1.3rem;
 }
 
-#text-field {
+.font-div {
+  background: #111;
+  color: #fff;
+  border: 2px solid #444;
+  border-radius: 2rem;
+  display: flex;
+  flex-flow: column nowrap;
+  min-height: 3rem;
+}
+
+.font-div:hover {
+  background: #111;
+  color: #fff;
+  border: 2px solid #fff;
+}
+
+.font-div-selected {
+  background: #fff;
+  color: #111;
+}
+
+.font-div-selected:hover {
+  background: #fff;
+  color: #111;
+  border: 2px solid #fff;
+}
+
+.font-p {
+  border-right: none;
+  border-left: none;
+  margin: auto 0;
+  text-align: center;
+  cursor: pointer;
+}
+
+/* Message controls */
+
+#message-div {
+  background: #444;
+  border: 1px solid #fff;
+  border-radius: 15px;
+  font-size: 1.5rem;
+  padding: 1rem;
+}
+
+#message-title {
+  font-size: 1.6rem;
+  margin: 0;
+  margin-bottom: 0.5rem;
+  display: inline-block;
+}
+
+#message-input {
   font-size: 1.2rem;
-  width: 80%;
-  position: absolute;
-  left: 10%;
-  margin: 0.5rem 0;
+  width: 95%;
+  padding-left: 0.5rem;
 }
 
 /* * Footer */
@@ -339,7 +490,7 @@ footer {
   padding-bottom: 0.1rem;
 }
 
-/* Display None - at bottom so inherited when loaded*/
+/* Display None - at bottom so applied to items instead of default display */
 .display-none {
   display: none;
 }
