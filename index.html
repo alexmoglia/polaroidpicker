@@ -43,6 +43,11 @@
         <!-- Details hidden at startup until upload -->
         <details class="details display-none" id="upload-details" open>
           <summary class="summary" id="upload-summary">My Album</summary>
+          <div id="upload-clear-wrapper">
+            <label for="upload-more" id="upload-more-label">Upload More</label>
+            <input type="file" id="upload-more" multiple accept="image/*""
+            onchange='uploadImages(this.files)' />
+          </div>
           <div id="upload-thumbnail-div" class="thumbnail-class"></div>
         </details>
 
@@ -60,9 +65,16 @@
 
       <!-- Controls -->
       <section id="controls-section" class="section">
+        <!-- Color Wrapper -->
         <div id="color-wrapper">
-          <!-- Span Div -->
-          <div id="span-div">
+          <!-- Large Selected Color Swatches -->
+          <div id="large-swatch-wrapper">
+            <div id="large-frame-swatch" class="large-swatch-div"></div>
+            <div id="large-text-swatch" class="large-swatch-div"></div>
+            <div id="large-border-swatch" class="large-swatch-div"></div>
+          </div>
+          <!-- Color Span Div -->
+          <div id="color-span-div">
             <span id="frame-color-span">Frame</span>
             <span id="text-color-span">Text</span>
             <span id="border-color-span">Border</span>
@@ -75,35 +87,60 @@
             class="color-control-class display-none"
           ></div>
           <!-- Border Color -->
-          <div
-            id="border-color-div"
-            class="color-control-class display-none"
-          ></div>
+          <div id="border-color-div" class="color-control-class display-none">
+            <!-- Border On/Of & Width -->
+            <div id="border-wrapper">
+              <!-- Border Switch -->
+              <div id="border-switch-controls-wrapper">
+                <div id="border-switch-capsule" class="border-switch-class">
+                  <span id="border-switch-on-span">on</span>
+                  <div
+                    id="border-switch-ball"
+                    class="border-switch-class"
+                  ></div>
+                  <span id="border-switch-off-span">off</span>
+                </div>
+              </div>
+              <!-- Border Width - Range Input -->
+              <span id="border-range-span" class="border-span-class"
+                >Width</span
+              >
+              <div id="border-range-wrapper">
+                <input
+                  id="border-range-input"
+                  type="range"
+                  min="0"
+                  max="50"
+                  step="1"
+                  value="1"
+                />
+              </div>
+            </div>
+          </div>
         </div>
 
-        <!-- Font Family -->
-        <!-- TODO replace font with scrolling divs displaying fonts -->
-
-        <div id="font-div" class="control-class">
-          <p class="input-p">Font</p>
-          <select id="font-input">
-            <option value="Amatic SC">Amatic SC</option>
-            <option value="Berkshire Swash">Berkshire Swash</option>
-            <option value="Gloria Hallelujah">Gloria Hallelujah</option>
-            <option value="Kaushan Script">Kaushan Script</option>
-            <option value="Pacifico">Pacifico</option>
-            <option value="Permanent Marker">Permanent Marker</option>
-            <option value="Satisfy">Satisfy</option>
-            <option value="Sue Ellen Francisco">Sue Ellen Francisco</option>
-          </select>
+        <!-- Font -->
+        <div id="font-wrapper">
+          <p id="font-title">Font</p>
+          <div id="font-size-wrapper">
+            <input
+              id="font-range-input"
+              type="range"
+              min="10"
+              max="300"
+              step="5"
+              value="100"
+            />
+          </div>
+          <div id="font-input"></div>
         </div>
 
         <!-- Text Input -->
-        <div id="text-div" class="control-class">
-          <p class="input-p">Message</p>
+        <div id="message-div" class="control-class">
+          <p id="message-title">Message</p>
           <input
             type="text"
-            id="text-field"
+            id="message-input"
             placeholder="type something!"
             oninput="changeText(this.value)"
           />
