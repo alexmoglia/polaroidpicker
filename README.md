@@ -4,15 +4,10 @@ https://alexmoglia.github.io/polaroidpicker/
 
 TO DO
 
-Upload Section:
-
-- Upload More button
-- Clear Album button
-
 Canvas:
 
 - change math so frame is more consistently sized around the image
-- Animate polaroid creation
+- Animate polaroid creation?
 
 Controls:
 
@@ -20,6 +15,4 @@ Controls:
 - Resize function
 - Rotate funtion
 
-Save/Download Section
-
-Background pattern randomizer
+Background pattern randomizer?

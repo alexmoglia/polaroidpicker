@@ -31,25 +31,52 @@
 
       <!-- Thumbnails -->
       <section id="thumbnail-section" class="section">
-        <!-- Upload Details/Summary -->
-        <label for="file-input" id="file-input-label">Upload</label>
-        <input
-          type="file"
-          id="file-input"
-          multiple
-          accept="image/*"
-          onchange="uploadImages(this.files);"
-        />
-        <!-- Details hidden at startup until upload -->
-        <details class="details display-none" id="upload-details" open>
-          <summary class="summary" id="upload-summary">My Album</summary>
-          <div id="upload-clear-wrapper">
-            <label for="upload-more" id="upload-more-label">Upload More</label>
-            <input type="file" id="upload-more" multiple accept="image/*""
-            onchange='uploadImages(this.files)' />
+        <div id="upload-thumbnail-section-wrapper">
+          <!-- Upload Details/Summary -->
+          <label
+            for="upload-file-input"
+            id="upload-file-input-label"
+            class="btn-class"
+            >Upload</label
+          >
+          <input
+            type="file"
+            id="upload-file-input"
+            class="upload-hidden-class"
+            multiple
+            accept="image/*"
+            onchange="uploadImages(this.files);"
+          />
+          <!-- Details hidden at startup until upload -->
+          <details class="details display-none" id="upload-details" open>
+            <summary class="summary" id="upload-summary">My Album</summary>
+
+            <div id="upload-thumbnail-div" class="thumbnail-class"></div>
+          </details>
+          <div id="upload-clear-wrapper" class="display-none">
+            <label
+              for="upload-more-input"
+              id="upload-more-label"
+              class="upload-clear-button-class btn-class"
+              >Upload More</label
+            >
+            <input
+              type="file"
+              id="upload-more-input"
+              class="upload-hidden-class"
+              multiple
+              accept="image/*"
+              onchange="uploadImages(this.files)"
+            />
+
+            <div
+              id="clear-album-button"
+              class="upload-clear-button-class btn-class"
+            >
+              Clear Album
+            </div>
           </div>
-          <div id="upload-thumbnail-div" class="thumbnail-class"></div>
-        </details>
+        </div>
 
         <!-- Example Album Details/Summary -->
         <details class="details" id="example-details" open>
@@ -58,9 +85,20 @@
         </details>
       </section>
 
+      <!-- Download Button -->
+      <div id="download-wrapper">
+        <a id="download-a"
+          ><div id="download-btn" class="download-btn-inactive btn-class">
+            Download!
+          </div></a
+        >
+      </div>
+
       <!-- Canvas -->
       <div id="canvas-div">
-        <canvas id="canvas" width="800" height="800"></canvas>
+        <canvas id="canvas" width="800" height="800"
+          >Your browser does not support the HTML5 Canvas</canvas
+        >
       </div>
 
       <!-- Controls -->
@@ -93,7 +131,7 @@
               <!-- Border Switch -->
               <div id="border-switch-controls-wrapper">
                 <div id="border-switch-capsule" class="border-switch-class">
-                  <span id="border-switch-on-span">on</span>
+                  <span id="border-switch-on-span"></span>
                   <div
                     id="border-switch-ball"
                     class="border-switch-class"
