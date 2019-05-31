@@ -1,4 +1,15 @@
 /* *** General Styling *** */
+:root {
+  --green: #48d593;
+  --red: #f78e8e;
+  --control-shadow: 5px 5px 5px #111;
+}
+
+* {
+  /* removes scroll bar as this 
+  effects the width of the thumbs sections */
+  scrollbar-width: none;
+}
 
 html {
   background: #333;
@@ -11,7 +22,8 @@ body {
   font-family: "Berkshire Swash", serif;
 }
 
-p {
+p,
+span {
   cursor: default;
 }
 
@@ -32,11 +44,21 @@ p {
 #app-wrapper {
   display: grid;
   grid-template-columns: 310px 1fr 310px;
-  grid-template-rows: 50px 75vh 1fr;
-  grid-gap: 1.5rem;
+  grid-template-rows: 50px 70vh 1fr 1fr;
+  grid-gap: 1rem;
 }
 
 /* Header/Logo Section */
+
+/* #header-wrapper {
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+} */
+
 a {
   text-decoration: none;
 }
@@ -48,7 +70,7 @@ a {
   border-radius: 20%;
   box-shadow: -5px -5px 5px #111;
   position: fixed;
-  top: 25px;
+  top: 1.2rem;
 }
 
 h1 {
@@ -58,8 +80,8 @@ h1 {
   text-shadow: -5px -5px 5px #111;
   display: inline-block;
   position: fixed;
-  left: 110px;
-  top: 5px;
+  left: 7rem;
+  top: 0;
 }
 
 /* Thumb & Control Section general styling */
@@ -68,90 +90,27 @@ h1 {
   background: #111;
   border-radius: 15px;
   border: 2px solid #fff;
-  grid-row: 2 / 3;
   min-width: 280px;
 }
 
 /* *** Thumbnail Section *** */
 
 #thumbnail-section {
+  /* Wraps  entire thumbnail section on left side of screen */
+  display: flex;
+  flex-flow: column nowrap;
+  overflow: scroll;
+  justify-content: space-between;
+  box-shadow: -10px 10px 10px #111;
+  grid-row: 2 / 3;
+}
+
+#upload-thumbnail-section-wrapper {
+  /* Wraps 'My Album' deatils, 'Upload More' & 'Clear Album' buttons*/
   display: flex;
   flex-flow: column nowrap;
   overflow: hidden;
-  justify-content: space-between;
-  box-shadow: -10px 10px 10px #111;
-}
-
-/* Upload Button  elements */
-#file-input-label {
-  color: #fff;
-  background: #111;
-  border: 1px outset #fff;
-  border-radius: 10px;
-  padding: 2rem;
-  font-size: 2rem;
-  text-align: center;
-  margin-bottom: 0.5rem;
-  transition: color 250ms ease;
-  transition: background 250ms ease;
-}
-
-#file-input-label:hover {
-  /* Upload button styling */
-  cursor: pointer;
-  color: #111;
-  background: #48d593;
-}
-
-#file-input {
-  display: none;
-}
-
-/* My Album & Examples */
-.details {
-  color: #fff;
-  background: #111;
-  border: 1px outset #fff;
-  border-radius: 10px;
-  /* transition: color 500ms ease-out;
-  transition: background 500ms ease-out;
-  transition: height 500ms ease-out; */
-  transition: all 500ms ease-out;
-}
-
-.details:hover {
-  color: #111;
-  background: #fff;
-}
-
-.details:not([open]) {
-  height: 20%;
-}
-
-.details[open] {
-  height: 75vh;
-  overflow-y: scroll;
-}
-
-.summary {
-  align-self: center;
-  text-align: center;
-  list-style: none;
-  font-size: 2rem;
-  padding: 2rem;
-}
-
-.summary::-webkit-details-marker {
-  /* list-style not supported by Chrome */
-  display: none;
-}
-
-.summary:hover {
-  /* hoverAlbums() function means no need for cursor pointer  */
-  cursor: default;
-}
-
-#upload-details {
+  flex-shrink: 0;
   margin-bottom: 0.5rem;
 }
 
@@ -160,9 +119,7 @@ h1 {
   background: #444;
   display: flex;
   flex-flow: row wrap;
-  flex-basis: 2.2rem;
-
-  /* TODO set min height so when only a few images loaded, hover div isn't mostly white */
+  /* min-height: 40vh; */
 }
 
 .thumb {
@@ -176,6 +133,128 @@ h1 {
 
 .thumb:hover {
   border: 2px solid #fff;
+  cursor: pointer;
+}
+
+.btn-class {
+  transition: color 250ms ease;
+  transition: background 250ms ease;
+}
+
+.btn-class:hover {
+}
+
+#upload-file-input-label {
+  /* Original Upload Button */
+  color: #fff;
+  background: #111;
+  border: 1px outset #fff;
+  border-radius: 10px;
+  font-size: 2rem;
+  text-align: center;
+  padding: 1.5rem;
+}
+
+#upload-file-input-label:hover {
+  /* Upload button styling */
+  cursor: pointer;
+  color: #111;
+  background: var(--green);
+}
+
+.upload-hidden-class {
+  /* Hides upload file inputs */
+  display: none;
+}
+
+/* 'Upload More' & 'Clear Album' buttons */
+#upload-clear-wrapper {
+}
+
+.upload-clear-button-class {
+  /* Upload More & Clear Album buttons */
+  /* order: 1; */
+  background: #111;
+  border-radius: 10px;
+  font-size: 1.4rem;
+  text-align: center;
+  padding: 0.3rem 0;
+  cursor: pointer;
+  margin: 0.5rem;
+}
+
+#upload-more-label {
+  color: var(--green);
+  border: 1px solid var(--green);
+  display: block;
+}
+
+#upload-more-label:hover {
+  color: #111;
+  background: var(--green);
+  border: 1px solid #111;
+}
+
+#clear-album-button {
+  color: var(--red);
+  border: 1px solid var(--red);
+}
+
+#clear-album-button:hover {
+  color: #111;
+  background: var(--red);
+  border: 1px solid #111;
+}
+
+.upload-clear-button-class:hover {
+  color: #fff;
+  border: 1px solid #fff;
+}
+
+/* 'My Album' & 'Examples' Details & Summary */
+.details {
+  color: #fff;
+  background: #111;
+  border: 1px solid #666;
+  border-radius: 10px;
+  transition: border 100ms ease-out;
+  /* transition: height 500ms ease-out; */
+}
+
+.details:hover {
+  /* color: #111; */
+  /* background: #fff; */
+  border: 1px solid #fff;
+}
+
+.details:not([open]) {
+  /* height: 20%; */
+}
+
+.details[open] {
+  /* height: 75vh; */
+  overflow-y: scroll;
+}
+
+#upload-details {
+  margin-bottom: 0.5rem;
+  /* transition: border 100ms ease-in; */
+}
+
+.summary {
+  align-self: center;
+  text-align: center;
+  list-style: none;
+  font-size: 2rem;
+  padding: 1rem 2rem;
+}
+
+.summary::-webkit-details-marker {
+  /* list-style not supported by Chrome */
+  display: none;
+}
+
+.summary:hover {
   cursor: pointer;
 }
 
@@ -206,6 +285,7 @@ h1 {
 
   /* grid property applied TO this section - from grid applied to #app-wrapper */
   grid-column: 3 / 4;
+  grid-row: 1 / 4;
 }
 
 /*  Color Controls */
@@ -242,6 +322,7 @@ h1 {
   border: 1px solid #fff;
   text-align: center;
   width: 33.3%;
+  text-shadow: var(--control-shadow);
 }
 
 #color-span-div span:hover {
@@ -274,7 +355,7 @@ h1 {
   flex-flow: row wrap;
 }
 
-/* Border On/Off Switch & Width */
+/* Border On/Off Switch */
 #border-wrapper {
   display: flex;
   place-items: center;
@@ -282,8 +363,10 @@ h1 {
   order: 1; /* places wrapper at end of flex box (applied from color-control-class */
 }
 
-.border-span-class {
+#border-range-span {
+  /* "Width" */
   font-size: 1.2rem;
+  text-shadow: var(--control-shadow);
 }
 
 #border-switch-controls-wrapper {
@@ -293,48 +376,55 @@ h1 {
 }
 
 #border-switch-controls-wrapper span {
+  /* "On" & "Off" */
   font-size: 1.25rem;
   position: absolute;
-  top: 2%;
+  top: 4%;
   z-index: 2;
 }
 
 #border-switch-on-span {
+  color: #111;
   left: 11%;
 }
 
 #border-switch-off-span {
-  right: 11%;
+  color: #fff;
+  right: 12%;
 }
 
 #border-switch-capsule {
-  border: 0.15rem solid #222;
-  background: #48d593;
-  width: 4rem;
+  border: 2px solid #222;
+  /* background: var(--green); */
+  background: #444;
+  width: 4.5rem;
   height: 2rem;
   border-radius: 1.3rem;
   position: relative;
   z-index: 1;
-  box-shadow: 5px 5px 5px #111;
+  box-shadow: var(--control-shadow);
 }
 
 #border-switch-ball {
-  border: 0.1rem solid #222;
-  background: #fff;
-  height: 1.9rem;
-  width: 1.9rem;
+  border: 0.1rem solid #111;
+  background: #666;
+  height: 2.3rem;
+  width: 2.3rem;
   margin: 0;
   border-radius: 100%;
   position: absolute;
-  top: -1%;
+  top: -10%; /* pulls ball up */
   right: 0%;
   z-index: 3;
+  box-shadow: 0px 0px 10px -2px #111;
 }
 
+#border-switch-capsule:hover,
 #border-switch-ball:hover {
   cursor: pointer;
 }
 
+/* Border Range Input */
 #border-range-span {
   padding-right: 0.5rem;
 }
@@ -343,7 +433,7 @@ h1 {
   background: #666;
   border: 1px solid #999;
   border-radius: 5rem;
-  box-shadow: 5px 5px 5px #111;
+  box-shadow: var(--control-shadow);
   padding: 0.3rem 0.8rem 0 0.5rem;
 }
 
@@ -380,22 +470,24 @@ input[type="color"]:hover {
   padding: 1rem;
   border-radius: 15px;
   min-height: 20vh;
-  max-height: 35vh;
+  max-height: 40vh;
   overflow-y: scroll;
+  margin-bottom: 0.2rem;
 }
 
 #font-title {
-  font-size: 2rem;
+  font-size: 1.8rem;
   margin: 0;
   margin-bottom: 0.5rem;
   display: inline-block;
+  text-shadow: var(--control-shadow);
 }
 
 #font-size-wrapper {
   background: #666;
   border: 1px solid #999;
   border-radius: 5rem;
-  box-shadow: 5px 5px 5px #111;
+  box-shadow: var(--control-shadow);
   padding: 0.3rem 0.8rem 0 0.5rem;
   margin-bottom: 1rem;
   position: relative;
@@ -434,6 +526,7 @@ input[type="color"]:hover {
 .font-div-selected {
   background: #fff;
   color: #111;
+  order: -1;
 }
 
 .font-div-selected:hover {
@@ -458,19 +551,57 @@ input[type="color"]:hover {
   border-radius: 15px;
   font-size: 1.5rem;
   padding: 1rem;
+  margin-bottom: 0.2rem;
 }
 
 #message-title {
-  font-size: 1.6rem;
+  font-size: 1.7rem;
   margin: 0;
   margin-bottom: 0.5rem;
   display: inline-block;
+  text-shadow: var(--control-shadow);
 }
 
 #message-input {
   font-size: 1.2rem;
   width: 95%;
   padding-left: 0.5rem;
+}
+
+/* *** Download Button *** */
+#download-wrapper {
+  grid-column: 1 / 2;
+  grid-row: 3 / 4;
+}
+
+#download-a {
+  cursor: default;
+}
+
+#download-btn {
+  border-radius: 10px;
+  font-size: 1.8rem;
+  text-align: center;
+  padding: 1.5rem;
+}
+
+.download-btn-inactive {
+  color: #666;
+  background: #222;
+  border: 1px solid #fff;
+}
+
+.download-btn-active {
+  color: var(--green);
+  background: #111;
+  border: 1px solid var(--green);
+}
+
+.download-btn-active:hover {
+  color: #111;
+  background: var(--green);
+  border: 1px solid #fff;
+  cursor: pointer;
 }
 
 /* * Footer */

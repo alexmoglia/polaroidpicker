@@ -212,7 +212,6 @@ let icon,
   textField,
   canvas,
   ctx,
-  albumObject,
   selectedImage,
   largeFrameSwatch,
   largeTextSwatch,
@@ -224,18 +223,22 @@ let icon,
   fontRangeInput,
   selectedFrameSwatch,
   selectedTextSwatch,
-  selectedBorderSwatch;
+  selectedBorderSwatch,
+  downloadBtnLink,
+  uploadClearWrapper;
 
 window.onload = init;
 function init() {
   // * Query Selectors
   icon = document.querySelector(".material-icons"); // used in changeColor()
   appName = document.querySelector("#app-name"); // used in changeColor()
-  uploadButton = document.querySelector("#file-input-label"); // used in uploadImages()
+  uploadButton = document.querySelector("#upload-file-input-label"); // used in uploadImages()
   uploadDetails = document.querySelector("#upload-details"); // used in toggleAlbums()
   uploadThumbsWrapper = document.querySelector("#upload-thumbnail-div"); // used in displayExampleThumbs(), uploadImages()
+  uploadClearWrapper = document.querySelector("#upload-clear-wrapper"); // used in uploadImages();
   exampleDetails = document.querySelector("#example-details"); // used in toggleAlbums()
   exampleThumbsWrapper = document.querySelector("#example-thumbnail-div"); // used in displayExampleThumbs()
+  downloadBtnLink = document.querySelector("#download-a");
   largeFrameSwatch = document.querySelector("#large-frame-swatch"); // used in changeColor()
   largeTextSwatch = document.querySelector("#large-text-swatch"); // used in changeColor()
   largeBorderSwatch = document.querySelector("#large-border-swatch"); // used in changeColor()
@@ -248,7 +251,7 @@ function init() {
   borderRangeSpan = document.querySelector("#border-range-span");
   fontRangeInput = document.querySelector("#font-range-input");
   fontField = document.querySelector("#font-input"); // used in changeFont()
-  textField = document.querySelector("#message-input");
+  textField = document.querySelector("#message-input"); // used in changeText()
 
   // * Event Listeners
   // Toggles albums so only one can be open, based on Summary element found in Details element
@@ -259,13 +262,20 @@ function init() {
       toggleAlbums(event.target.id);
     })
   );
-  // Hover Toggle
-  SUMMARIES.forEach(summary =>
-    summary.addEventListener("mouseover", function(event) {
-      // hover on Summary, need Details, thus pass id for processing in hoverAlbums()
-      hoverAlbums(event.target.id);
-    })
-  );
+
+  //! Hover Toggle - turning off hover functionality
+  // SUMMARIES.forEach(summary =>
+  //   summary.addEventListener("mouseover", function(event) {
+  //     // hover on Summary, need Details, thus pass id for processing in hoverAlbums()
+  //     hoverAlbums(event.target.id);
+  //   })
+  // );
+
+  // Clear Album listener
+  const CLEAR_ALBUM_BTN = document.querySelector("#clear-album-button");
+  CLEAR_ALBUM_BTN.addEventListener("click", function(event) {
+    clearAlbum();
+  });
 
   // Color Tab listeners (Frame, Text, Border)
   const COLOR_CONTROL_SPANS = document.querySelectorAll("#color-span-div span");
@@ -275,6 +285,7 @@ function init() {
     })
   );
 
+  // ! turning off hover functionality
   // COLOR_CONTROL_SPANS.forEach(tab =>
   //   tab.addEventListener("mouseover", function(event) {
   //     hoverColorTab(event.target);
@@ -282,7 +293,8 @@ function init() {
   // );
 
   // Border listeners
-  borderSwitchBall.addEventListener("click", function() {
+  borderSwitchCapsule.addEventListener("click", function() {
+    // listening to capsule will include child ball
     borderSwitch();
   });
 
@@ -309,39 +321,50 @@ function init() {
   displayFonts();
 }
 
-// * Hover/Toggle Control Functions
+// * Toggle Selected Album / Color Tab Functions
 
 function toggleAlbums(clickedAlbum) {
   if (clickedAlbum === "upload-summary") {
+    // 'My Album' clicked
     if (exampleDetails.hasAttribute("open")) {
-      exampleDetails.removeAttribute("open");
+      // 'Examples' is open
+      exampleDetails.removeAttribute("open"); // close 'Examples'
+      uploadClearWrapper.classList.remove("display-none"); // show 'Upload More' & 'Clear Album'
     } else if (uploadDetails.hasAttribute("open")) {
-      exampleDetails.setAttribute("open", "open");
+      // 'My Album' is open
+      exampleDetails.setAttribute("open", "open"); // open 'Examples'
+      uploadClearWrapper.classList.add("display-none"); // hide 'Upload More' & 'Clear Album'
     }
   } else if (clickedAlbum === "example-summary") {
+    // 'Examples' clicked
     if (uploadDetails.hasAttribute("open")) {
-      uploadDetails.removeAttribute("open");
+      // 'My Album' is open
+      uploadDetails.removeAttribute("open"); // close 'My Album'
+      uploadClearWrapper.classList.add("display-none"); // hide 'Upload More' & 'Clear Album'
     } else if (exampleDetails.hasAttribute("open")) {
-      uploadDetails.setAttribute("open", "open");
+      // 'Examples' is open
+      uploadDetails.setAttribute("open", "open"); // open 'Examples'
+      uploadClearWrapper.classList.remove("display-none"); // show 'Upload More' & 'Clear Album'
     }
   }
 }
 
-function hoverAlbums(id) {
-  let hoveredAlbum = document.querySelector(`#${id}`).parentElement;
-  // possible values for hoveredAlbum = [#example-details, #upload-details]
-  if (hoveredAlbum.id === "example-details") {
-    if (uploadDetails.hasAttribute("open")) {
-      uploadDetails.removeAttribute("open");
-    }
-    exampleDetails.setAttribute("open", "open");
-  } else if (hoveredAlbum.id === "upload-details") {
-    if (exampleDetails.hasAttribute("open")) {
-      exampleDetails.removeAttribute("open");
-    }
-    uploadDetails.setAttribute("open", "open");
-  }
-}
+// ! turning off hover functionality
+// function hoverAlbums(id) {
+//   let hoveredAlbum = document.querySelector(`#${id}`).parentElement;
+//   // possible values for hoveredAlbum = [#example-details, #upload-details]
+//   if (hoveredAlbum.id === "example-details") {
+//     if (uploadDetails.hasAttribute("open")) {
+//       uploadDetails.removeAttribute("open");
+//     }
+//     exampleDetails.setAttribute("open", "open");
+//   } else if (hoveredAlbum.id === "upload-details") {
+//     if (exampleDetails.hasAttribute("open")) {
+//       exampleDetails.removeAttribute("open");
+//     }
+//     uploadDetails.setAttribute("open", "open");
+//   }
+// }
 
 function toggleColorTab(clickedColorTab) {
   const COLOR_CONTROL_SPANS = document.querySelectorAll("#color-span-div span");
@@ -361,24 +384,24 @@ function toggleColorTab(clickedColorTab) {
   TARGET_COLOR_DIV.classList.remove("display-none");
 }
 
-// ! testing click instead of hover (toggleColortab)
-function hoverColorTab(hoveredTab) {
-  const COLOR_CONTROL_SPANS = document.querySelectorAll("#color-span-div span");
-  COLOR_CONTROL_SPANS.forEach(function(span) {
-    span.style.backgroundColor = "#111";
-    span.style.borderBottom = "1px solid #fff";
-  });
-  hoveredTab.style.backgroundColor = "#444";
-  hoveredTab.style.borderBottom = "none";
+// ! turning off hover functionality
+// function hoverColorTab(hoveredTab) {
+//   const COLOR_CONTROL_SPANS = document.querySelectorAll("#color-span-div span");
+//   COLOR_CONTROL_SPANS.forEach(function(span) {
+//     span.style.backgroundColor = "#111";
+//     span.style.borderBottom = "1px solid #fff";
+//   });
+//   hoveredTab.style.backgroundColor = "#444";
+//   hoveredTab.style.borderBottom = "none";
 
-  const COLOR_DIVS = document.querySelectorAll(".color-control-class");
-  COLOR_DIVS.forEach(div => div.classList.add("display-none"));
+//   const COLOR_DIVS = document.querySelectorAll(".color-control-class");
+//   COLOR_DIVS.forEach(div => div.classList.add("display-none"));
 
-  // idClip uses regex to extract the first word in the hoveredTab's id (stops at first dash character)
-  const ID_CLIP = hoveredTab.id.match(/(\w*)/)[0]; // possible values - 'frame', 'text', 'border'
-  const TARGET_COLOR_DIV = document.querySelector(`#${ID_CLIP}-color-div`);
-  TARGET_COLOR_DIV.classList.remove("display-none");
-}
+//   // idClip uses regex to extract the first word in the hoveredTab's id (stops at first dash character)
+//   const ID_CLIP = hoveredTab.id.match(/(\w*)/)[0]; // possible values - 'frame', 'text', 'border'
+//   const TARGET_COLOR_DIV = document.querySelector(`#${ID_CLIP}-color-div`);
+//   TARGET_COLOR_DIV.classList.remove("display-none");
+// }
 
 // * Canvas Control Functions
 
@@ -422,13 +445,13 @@ function changeColor(colorValue, selectedSwatch, divWrapper) {
 
   // apply color change to canvas if an image is selected
   if (selectedImage) {
-    albumObject = findAlbumObject(selectedImage);
+    const ALBUM_OBJECT = findAlbumObject(selectedImage);
     if (divWrapper.id === "frame-color-div") {
-      albumObject.frameColor = colorValue;
+      ALBUM_OBJECT.frameColor = colorValue;
     } else if (divWrapper.id === "text-color-div") {
-      albumObject.textColor = colorValue;
+      ALBUM_OBJECT.textColor = colorValue;
     } else {
-      albumObject.borderColor = colorValue;
+      ALBUM_OBJECT.borderColor = colorValue;
     }
     canvasImage(selectedImage);
   }
@@ -439,19 +462,21 @@ function borderSwitch() {
   if (selectedImage) {
     const ALBUM_OBJECT = findAlbumObject(selectedImage);
     if (ALBUM_OBJECT.borderSwitchOn === true) {
-      borderSwitchBall.style.left = "-2%";
+      borderSwitchBall.style.left = "0%"; // move switch ball to the left (Off)
       borderSwitchBall.style.right = "unset";
-      borderSwitchCapsule.style.backgroundColor = "#f78e8e";
-      ALBUM_OBJECT.borderSwitchOn = false;
-      borderRangeInput.setAttribute("disabled", true);
-      borderRangeSpan.style.color = "#777";
+      borderSwitchCapsule.style.backgroundColor = "#f78e8e"; // set capsule background to light red
+      ALBUM_OBJECT.borderSwitchOn = false; // set album object's border switch to off
+      borderRangeInput.setAttribute("disabled", true); // disable the width range input
+      borderRangeInput.parentElement.style.background = "#444"; // set the width range input's background to dark grey
+      borderRangeSpan.style.color = "#777"; // set "Width" to light grey (indicating range is inactive)
     } else if (ALBUM_OBJECT.borderSwitchOn === false) {
-      borderSwitchBall.style.right = "-2%";
+      borderSwitchBall.style.right = "0%"; // move switch ball to the right (On)
       borderSwitchBall.style.left = "unset";
-      borderSwitchCapsule.style.backgroundColor = "#48d593";
-      ALBUM_OBJECT.borderSwitchOn = true;
-      borderRangeInput.removeAttribute("disabled");
-      borderRangeSpan.style.color = "#fff";
+      borderSwitchCapsule.style.backgroundColor = "#48d593"; // set capsule background to light green
+      ALBUM_OBJECT.borderSwitchOn = true; // set album object's border switch to on
+      borderRangeInput.removeAttribute("disabled"); // re-enable the width range input
+      borderRangeInput.parentElement.style.background = "#666"; // set the width range input's background to light grey
+      borderRangeSpan.style.color = "#fff"; // set "Width" to white (indicating range is active)
     }
     canvasImage(selectedImage);
   }
@@ -490,9 +515,6 @@ function changeFont(selectedFont) {
     const ALBUM_OBJECT = findAlbumObject(selectedImage);
     ALBUM_OBJECT.font = selectedFont.id + "";
     canvasImage(selectedImage);
-  } else {
-    // if no image selected (still viewing canvas instructions)...
-    displayCanvasInstructions(); // if no image loaded, change font family of Canvas Instructions
   }
 }
 
@@ -583,17 +605,18 @@ function displayFonts() {
 
 // Upload Images
 let uploadThumbCounter = 0;
-const UPLOAD_ALBUM = [];
+let uploadAlbum = [];
 function uploadImages(files) {
   uploadButton.classList.add("display-none"); // hide the original Upload button
   uploadDetails.classList.remove("display-none"); // show the "My Album" details/summary/div
+  uploadClearWrapper.classList.remove("display-none"); // show the "Upload More" and "Clear Album" buttons
   exampleDetails.removeAttribute("open"); // collapse the "Examples" album
 
   for (let i = 0; i < files.length; i++) {
     let file = files[i];
     let reader = new FileReader();
     reader.onload = function(event) {
-      // thumbObject is created to add to UPLOAD_ALBUM array so changes can be saved/retrieved
+      // thumbObject is created to add to uploadAlbum array so changes can be saved/retrieved
       let thumbObject = {
         albumId: "up",
         id: uploadThumbCounter,
@@ -604,16 +627,17 @@ function uploadImages(files) {
         borderColor: "#fff",
         borderWidth: 3,
         font: "Permanent Marker",
-        textSize: "100px",
+        textSize: "100",
         url: `url('${event.target.result}')`
       };
-      UPLOAD_ALBUM.push(thumbObject);
+      uploadAlbum.push(thumbObject);
 
       // div object - the visible thumbnail
       let thumb = document.createElement("div");
       thumb.id = `thumb-up-${uploadThumbCounter}`;
       uploadThumbCounter++;
       thumb.classList.add("thumb");
+      thumb.classList.add("upload-thumb-class");
       thumb.style.backgroundImage = `url('${event.target.result}')`;
       thumb.alt = "";
 
@@ -631,41 +655,22 @@ function uploadImages(files) {
   uploadDetails.setAttribute("open", "open"); // ensures "My Album" opens, even if Examples album is closed first
 }
 
+function clearAlbum() {
+  const UPLOADED_THUMBS = document.querySelectorAll(".upload-thumb-class"); // locate all uploaded thumb div elements
+  UPLOADED_THUMBS.forEach(thumb => uploadThumbsWrapper.removeChild(thumb)); // remove divs from wrapper
+  uploadButton.classList.remove("display-none"); // show the original Upload button
+  uploadDetails.classList.add("display-none"); // hide the "My Album" details/summary/div
+  uploadClearWrapper.classList.add("display-none"); // hide the "Upload More" and "Clear Album"
+  exampleDetails.setAttribute("open", "open"); // opens Examples album since My Album turns in Upload button
+
+  // displayCanvasInstructions();
+}
+
 function canvasImage(div) {
   // called in event listeners on thumbs, in changeColor(), changeFont(), changeText()
   // creates the image object to be drawn, then calls drawCanvasImage() & drawText()
   const ALBUM_OBJECT = findAlbumObject(div);
-  setControlValues(ALBUM_OBJECT);
-
-  if (div !== selectedImage) {
-    // if a new image is clicked...
-
-    // Remove selected swatch border (red) only if selected swatches exist
-    if (selectedFrameSwatch) {
-      selectedFrameSwatch.classList.remove("swatch-selected");
-    }
-    if (selectedTextSwatch) {
-      selectedTextSwatch.classList.remove("swatch-selected");
-    }
-    if (selectedBorderSwatch) {
-      selectedBorderSwatch.classList.remove("swatch-selected");
-    }
-
-    // reset Border Switch
-    if (ALBUM_OBJECT.borderSwitchOn === true) {
-      borderSwitchBall.style.right = "-2%";
-      borderSwitchBall.style.left = "unset";
-      borderSwitchCapsule.style.backgroundColor = "#48d593";
-      borderRangeInput.removeAttribute("disabled");
-      borderRangeSpan.style.color = "#fff";
-    } else if (ALBUM_OBJECT.borderSwitchOn === false) {
-      borderSwitchBall.style.left = "-2%";
-      borderSwitchBall.style.right = "unset";
-      borderSwitchCapsule.style.backgroundColor = "#f78e8e";
-      borderRangeInput.setAttribute("disabled", true);
-      borderRangeSpan.style.color = "#777";
-    }
-  }
+  setControlValues(ALBUM_OBJECT, div);
 
   selectedImage = div; // used in control functions
 
@@ -684,31 +689,76 @@ function canvasImage(div) {
 
 function findAlbumObject(clickedImage) {
   // called in canvasImg(), changeColor(), changeFont(), changeText()
-  let albumId = clickedImage.id.slice(6, 8);
-  let thumbId = clickedImage.id.slice(9);
+  let albumId = clickedImage.id.slice(6, 8); // possible values - 'up' and 'ex'
+  let thumbId = clickedImage.id.slice(9); // index for album array
   if (albumId === "ex") {
     return EXAMPLE_ALBUM[thumbId];
   } else {
-    return UPLOAD_ALBUM[thumbId];
+    return uploadAlbum[thumbId];
   }
 }
 
-function setControlValues(albumObject) {
+function setControlValues(ALBUM_OBJECT, div) {
+  if (div !== selectedImage) {
+    // if a new image is clicked...
+
+    // Update "Download!" button with title of canvased image
+    downloadBtnLink.download = `polaroidpicker_${ALBUM_OBJECT.message}.png`; // create file name & extension for downloading
+    const DOWNLOAD_BTN = document.querySelector("#download-btn");
+    DOWNLOAD_BTN.classList.remove("download-btn-inactive");
+    DOWNLOAD_BTN.classList.add("download-btn-active");
+    // Download Canvas button
+    DOWNLOAD_BTN.addEventListener("click", function(event) {
+      let dataURL = canvas.toDataURL("image/png");
+      downloadBtnLink.href = dataURL;
+    });
+
+    // Remove selected swatch border (red) only if there is a selected swatch
+    if (selectedFrameSwatch) {
+      selectedFrameSwatch.classList.remove("swatch-selected");
+    }
+    if (selectedTextSwatch) {
+      selectedTextSwatch.classList.remove("swatch-selected");
+    }
+    if (selectedBorderSwatch) {
+      selectedBorderSwatch.classList.remove("swatch-selected");
+    }
+
+    // reset Border Switch
+    if (ALBUM_OBJECT.borderSwitchOn === true) {
+      borderSwitchBall.style.right = "0%";
+      borderSwitchBall.style.left = "unset";
+      borderSwitchCapsule.style.backgroundColor = "#48d593";
+      borderRangeInput.removeAttribute("disabled");
+      borderRangeSpan.style.color = "#fff";
+    } else if (ALBUM_OBJECT.borderSwitchOn === false) {
+      borderSwitchBall.style.left = "0%";
+      borderSwitchBall.style.right = "unset";
+      borderSwitchCapsule.style.backgroundColor = "#f78e8e";
+      borderRangeInput.setAttribute("disabled", true);
+      borderRangeSpan.style.color = "#777";
+    }
+  }
+
   // Large Color Swatches color
-  largeFrameSwatch.style.backgroundColor = albumObject.frameColor;
-  largeTextSwatch.style.backgroundColor = albumObject.textColor;
-  largeBorderSwatch.style.backgroundColor = albumObject.borderColor;
+  largeFrameSwatch.style.backgroundColor = ALBUM_OBJECT.frameColor;
+  largeTextSwatch.style.backgroundColor = ALBUM_OBJECT.textColor;
+  largeBorderSwatch.style.backgroundColor = ALBUM_OBJECT.borderColor;
 
   // Logo / Icon colors
-  icon.style.backgroundColor = albumObject.frameColor;
-  appName.style.color = albumObject.textColor;
-  icon.style.color = albumObject.borderColor;
+  icon.style.backgroundColor = ALBUM_OBJECT.frameColor;
+  appName.style.color = ALBUM_OBJECT.textColor;
+  appName.style.fontFamily = ALBUM_OBJECT.font;
+  icon.style.color = ALBUM_OBJECT.borderColor;
 
+  // Border button grey out before loaded
+  document.querySelector("#border-switch-on-span").innerHTML = "on";
+  borderSwitchBall.style.background = "#fff";
   // Border Size Range Input
-  borderRangeInput.value = albumObject.borderWidth;
+  borderRangeInput.value = ALBUM_OBJECT.borderWidth;
 
   // Font Size Range Input
-  fontRangeInput.value = albumObject.textSize;
+  fontRangeInput.value = ALBUM_OBJECT.textSize;
 
   // Font Button
   const FONT_ALL_P = document.querySelectorAll(".font-p");
@@ -716,7 +766,7 @@ function setControlValues(albumObject) {
     if (p.parentElement.classList.contains("font-div-selected")) {
       p.parentElement.classList.remove("font-div-selected");
     }
-    if (p.id === albumObject.font) {
+    if (p.id === ALBUM_OBJECT.font) {
       p.parentElement.classList.add("font-div-selected");
     }
   });
@@ -793,31 +843,31 @@ function setCanvasMaxSize() {
 
 // * Draw Image Functions
 
-function drawCanvasImage(imgObj, albumObject) {
+function drawCanvasImage(imgObj, ALBUM_OBJECT) {
   canvas.width = imgObj.width + 150;
   canvas.height = imgObj.height + 450; // acounts for "polaroid" spacing below picture
   // draw frame
-  ctx.fillStyle = albumObject.frameColor;
+  ctx.fillStyle = ALBUM_OBJECT.frameColor;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   // draw image
   ctx.drawImage(imgObj, 75, 75);
   // draw image border
-  if (albumObject.borderSwitchOn === true) {
-    ctx.strokeStyle = albumObject.borderColor;
-    ctx.lineWidth = albumObject.borderWidth;
+  if (ALBUM_OBJECT.borderSwitchOn === true) {
+    ctx.strokeStyle = ALBUM_OBJECT.borderColor;
+    ctx.lineWidth = ALBUM_OBJECT.borderWidth;
     ctx.strokeRect(75, 75, imgObj.width, imgObj.height);
   }
 }
 
 // * Draw Text Function
 
-function drawText(albumObject) {
-  ctx.fillStyle = albumObject.textColor;
-  ctx.font = `${albumObject.textSize}px ${albumObject.font}, cursive`;
+function drawText(ALBUM_OBJECT) {
+  ctx.fillStyle = ALBUM_OBJECT.textColor;
+  ctx.font = `${ALBUM_OBJECT.textSize}px ${ALBUM_OBJECT.font}, cursive`;
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
   ctx.fillText(
-    albumObject.message,
+    ALBUM_OBJECT.message,
     canvas.width / 2,
     canvas.height - 175 // places text in polaroid area below picture
   );
