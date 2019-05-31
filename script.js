@@ -671,6 +671,7 @@ function canvasImage(div) {
   // creates the image object to be drawn, then calls drawCanvasImage() & drawText()
   const ALBUM_OBJECT = findAlbumObject(div);
   setControlValues(ALBUM_OBJECT, div);
+  downloadBtnLink.download = `polaroidpicker_${ALBUM_OBJECT.message}.png`; // create file name & extension for downloading
 
   selectedImage = div; // used in control functions
 
@@ -703,7 +704,6 @@ function setControlValues(ALBUM_OBJECT, div) {
     // if a new image is clicked...
 
     // Update "Download!" button with title of canvased image
-    downloadBtnLink.download = `polaroidpicker_${ALBUM_OBJECT.message}.png`; // create file name & extension for downloading
     const DOWNLOAD_BTN = document.querySelector("#download-btn");
     DOWNLOAD_BTN.classList.remove("download-btn-inactive");
     DOWNLOAD_BTN.classList.add("download-btn-active");
