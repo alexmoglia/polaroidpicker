@@ -116,58 +116,93 @@ const EXAMPLE_ALBUM = [
 const COLOR_SWATCHES = [
   (color1 = {
     id: 1,
-    name: "dark blue",
-    value: "#090e12"
+    name: "black",
+    value: "#000000"
   }),
   (color2 = {
     id: 2,
-    name: "white",
-    value: "#f2f0ee"
+    name: "grey",
+    value: "#323232"
   }),
   (color3 = {
     id: 3,
-    name: "light blue",
-    value: "#cdecff"
+    name: "white",
+    value: "#ffffff"
   }),
   (color4 = {
     id: 4,
-    name: "purple",
-    value: "#f2e2ff"
+    name: "blue",
+    value: "#4093ff"
   }),
   (color5 = {
     id: 5,
-    name: "green",
-    value: "#a8e6cf"
+    name: "purple",
+    value: "#d699ff"
   }),
   (color6 = {
     id: 6,
-    name: "teal",
-    value: "#67f2e4"
+    name: "green",
+    value: "#46db7c"
   }),
   (color7 = {
     id: 7,
-    name: "lime",
-    value: "#dcedc1"
+    name: "yellow",
+    value: "#e9f77b"
   }),
   (color8 = {
     id: 8,
     name: "orange",
-    value: "#ffd3b6"
+    value: "#ff913d"
   }),
   (color9 = {
     id: 9,
-    name: "rose",
-    value: "#ffaaa5"
+    name: "red",
+    value: "#ff6e61"
   }),
   (color10 = {
     id: 10,
-    name: "red",
-    value: "#ff8b94"
+    name: "dark blue",
+    value: "#09141d"
   }),
   (color11 = {
     id: 11,
-    name: "dark red",
-    value: "#602320"
+    name: "light grey",
+    value: "#8a8a8a"
+  }),
+  (color12 = {
+    id: 12,
+    name: "smoke",
+    value: "#f2f0ee"
+  }),
+  (color13 = {
+    id: 13,
+    name: "light blue",
+    value: "#cdecff"
+  }),
+  (color14 = {
+    id: 14,
+    name: "purple",
+    value: "#f2e2ff"
+  }),
+  (color15 = {
+    id: 15,
+    name: "mint",
+    value: "#a8e6cf"
+  }),
+  (color16 = {
+    id: 16,
+    name: "lime",
+    value: "#dcedc1"
+  }),
+  (color17 = {
+    id: 17,
+    name: "creamsicle",
+    value: "#ffd3b6"
+  }),
+  (color18 = {
+    id: 18,
+    name: "rose",
+    value: "#ffaaa5"
   })
 ];
 
@@ -312,6 +347,7 @@ function init() {
   ctx = canvas.getContext("2d");
 
   // * Function Calls
+  randomizeBackground();
   displayCanvasInstructions(); // draws the canvas instructions at startup
   displayExampleThumbs(); // creates & displays the example thumbnails
   displaySwatches(frameColorDiv); // creates Frame color swatches
@@ -569,11 +605,17 @@ function displaySwatches(divWrapper) {
     divWrapper.append(swatch);
   });
 
+  // Custom color picker span
+  let colorPickerSpan = document.createElement("span");
+  colorPickerSpan.classList.add("swatch-custom-span");
+  colorPickerSpan.innerHTML = "Custom Color:";
+  divWrapper.append(colorPickerSpan);
+
   // Custom color picker input
   let colorPicker = document.createElement("input");
   colorPicker.type = "color";
   colorPicker.id = `swatch-${divWrapper.id.match(/(\w*)/)[0]}-custom`; // 'swatch-frame-custom', 'swatch-text-custom', 'swatch-border-custom'
-  colorPicker.classList.add("swatch");
+  colorPicker.classList.add("swatch-custom-picker");
   colorPicker.value = "#fff";
   colorPicker.addEventListener("input", function(event) {
     // passes in selected color value, the swatch div, and the wrapper (frame or text wrappers)
@@ -606,6 +648,7 @@ function displayFonts() {
 // Upload Images
 let uploadThumbCounter = 0;
 let uploadAlbum = [];
+
 function uploadImages(files) {
   uploadButton.classList.add("display-none"); // hide the original Upload button
   uploadDetails.classList.remove("display-none"); // show the "My Album" details/summary/div
@@ -772,6 +815,35 @@ function setControlValues(ALBUM_OBJECT, div) {
   });
 }
 
+function randomizeBackground() {
+  // background: url("images/patterns/papyrus-dark.png");
+
+  const BACKGROUNDS = [
+    // Background patterns from Toptal Subtle Patterns
+    (back1 = {
+      background: "url('images/patterns/papyrus-dark.png')",
+      opacity: 0.3
+    }),
+    (back2 = {
+      background: "url('images/patterns/black_scales_@2X.png')",
+      opacity: 0.5
+    }),
+    (back3 = {
+      background: "url('images/patterns/darkness.png')",
+      opacity: 0.4
+    }),
+    (back4 = {
+      background: "url('images/patterns/cartographer.png')",
+      opacity: 1
+    })
+  ];
+
+  const BACKGROUND_DIV = document.querySelector("#background-div");
+  const RANDOM_VALUE = Math.round(Math.random() * 2); // gets a value between 0 - 2
+  BACKGROUND_DIV.style.background = BACKGROUNDS[RANDOM_VALUE].background;
+  BACKGROUND_DIV.style.opacity = BACKGROUNDS[RANDOM_VALUE].opacity;
+}
+
 // * Canvas Functions
 
 function displayCanvasInstructions() {
@@ -826,7 +898,7 @@ function displayCanvasInstructions() {
 }
 
 function setCanvasMaxSize() {
-  // called in canvasImage()
+  // called in canvasImage() & displayCanvasInstructions()
   let width =
     window.innerWidth ||
     document.documentElement.clientWidth ||

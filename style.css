@@ -28,11 +28,7 @@ span {
 }
 
 #background-div {
-  /* Background pattern from Toptal Subtle Patterns */
-  /* background: url("images/patterns/papyrus-dark.png");
-  background: url("images/patterns/pink\ dust.png"); */
-  background: url("images/patterns/darkness.png");
-  opacity: 0.5;
+  /* Background & Opacity applied by randomBackground() */
   position: absolute;
   top: 0;
   left: 0;
@@ -50,14 +46,15 @@ span {
 
 /* Header/Logo Section */
 
-/* #header-wrapper {
-  grid-column: 1 / 2;
+#header-wrapper {
+  /* grid-column: 1 / 2;
   grid-row: 1 / 2;
-
   display: flex;
   flex-flow: row nowrap;
-  justify-content: center;
-} */
+  justify-content: center; */
+
+  position: relative;
+}
 
 a {
   text-decoration: none;
@@ -69,8 +66,8 @@ a {
   background: #fff;
   border-radius: 20%;
   box-shadow: -5px -5px 5px #111;
-  position: fixed;
-  top: 1.2rem;
+  position: absolute;
+  left: 1rem;
 }
 
 h1 {
@@ -79,9 +76,9 @@ h1 {
   font-size: 2rem;
   text-shadow: -5px -5px 5px #111;
   display: inline-block;
-  position: fixed;
-  left: 7rem;
-  top: 0;
+  position: relative;
+  left: 5rem;
+  top: -1rem;
 }
 
 /* Thumb & Control Section general styling */
@@ -445,8 +442,8 @@ h1 {
 /* Swatches */
 .swatch {
   border: 1px solid #111;
-  width: 2.1rem;
-  height: 2.1rem;
+  width: 1.3rem;
+  height: 1.3rem;
   margin: 0.1rem;
 }
 
@@ -455,12 +452,28 @@ h1 {
   border: 1px solid #fff;
 }
 
-.swatch-selected {
-  border: 1px solid #ff0000;
+.swatch-custom-span {
+  font-size: 1.4rem;
+  margin-top: 0.5rem;
+  margin-left: 1.5rem;
+  text-shadow: var(--control-shadow);
 }
 
-input[type="color"]:hover {
+.swatch-custom-picker {
+  border: 1px solid #111;
+  width: 3rem;
+  height: 1.5rem;
+  margin-top: 0.7rem;
+  margin-left: 0.5rem;
+}
+
+.swatch-custom-picker:hover {
+  border: 1px solid #fff;
   cursor: pointer;
+}
+
+.swatch-selected {
+  border: 1px solid #ff0000;
 }
 
 /* Font Controls */
@@ -469,8 +482,7 @@ input[type="color"]:hover {
   background: #444;
   padding: 1rem;
   border-radius: 15px;
-  min-height: 20vh;
-  max-height: 40vh;
+  max-height: 39vh;
   overflow-y: scroll;
   margin-bottom: 0.2rem;
 }
@@ -619,6 +631,64 @@ footer {
   padding-top: 0.1rem;
   padding-right: 1rem;
   padding-bottom: 0.1rem;
+}
+
+/* Media Query for Mobile */
+
+@media (max-width: 500px) {
+  /* *** General Styling */
+  html {
+    overflow-y: initial;
+    overflow-x: hidden;
+  }
+
+  body {
+    margin: 1rem;
+  }
+
+  .material-icons {
+    left: 1.2rem;
+  }
+
+  h1 {
+    font-size: 1.7rem;
+    left: 5rem;
+    top: -0.7rem;
+  }
+
+  #app-wrapper {
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: repeat(1fr, 6);
+  }
+
+  /* *** Thumbnail Styling */
+  #thumbnail-section {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+  }
+
+  /* *** Canvas Styling */
+  #canvas-div {
+    grid-column: 1 / 2;
+    grid-row: 3 / 4;
+  }
+
+  /* *** Controls Styling */
+  #controls-section {
+    grid-column: 1 / 2;
+    grid-row: 4 / 5;
+  }
+
+  #download-wrapper {
+    grid-column: 1/2;
+    grid-row: 5/6;
+  }
+
+  /* *** Footer */
+  footer {
+    position: initial;
+  }
 }
 
 /* Display None - at bottom so applied to items instead of default display */
