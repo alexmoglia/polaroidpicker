@@ -29,12 +29,15 @@ span {
 
 #background-div {
   /* Background & Opacity applied by randomBackground() */
+
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: -1;
+  background-position: center;
+  background-size: cover;
+  z-index: -10;
 }
 
 #app-wrapper {
@@ -672,6 +675,12 @@ footer {
   #canvas-div {
     grid-column: 1 / 2;
     grid-row: 3 / 4;
+  }
+
+  #canvas {
+    box-shadow: -5px 5px 15px -5px, 5px 5px 15px -5px;
+    max-width: 90vw;
+    max-height: 90vh;
   }
 
   /* *** Controls Styling */
