@@ -11,6 +11,11 @@
   scrollbar-width: none;
 }
 
+*::-webkit-scrollbar {
+  /* necessary for Chrome */
+  display: none;
+}
+
 html {
   background: #333;
   box-sizing: border-box;
