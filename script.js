@@ -347,7 +347,7 @@ function init() {
   ctx = canvas.getContext("2d");
 
   // * Function Calls
-  randomizeBackground();
+  // randomizeBackground();
   displayCanvasInstructions(); // draws the canvas instructions at startup
   displayExampleThumbs(); // creates & displays the example thumbnails
   displaySwatches(frameColorDiv); // creates Frame color swatches
@@ -815,34 +815,34 @@ function setControlValues(ALBUM_OBJECT, div) {
   });
 }
 
-function randomizeBackground() {
-  // background: url("images/patterns/papyrus-dark.png");
+// function randomizeBackground() {
+//   // background: url("images/patterns/papyrus-dark.png");
 
-  const BACKGROUNDS = [
-    // Background patterns from Toptal Subtle Patterns
-    (back1 = {
-      background: "url('images/patterns/papyrus-dark.png')",
-      opacity: 0.3
-    }),
-    (back2 = {
-      background: "url('images/patterns/black_scales_@2X.png')",
-      opacity: 0.5
-    }),
-    (back3 = {
-      background: "url('images/patterns/darkness.png')",
-      opacity: 0.4
-    }),
-    (back4 = {
-      background: "url('images/patterns/cartographer.png')",
-      opacity: 1
-    })
-  ];
+//   const BACKGROUNDS = [
+//     // Background patterns from Toptal Subtle Patterns
+//     (back1 = {
+//       background: "url('images/patterns/papyrus-dark.png')",
+//       opacity: 0.3
+//     }),
+//     (back2 = {
+//       background: "url('images/patterns/black_scales_@2X.png')",
+//       opacity: 0.5
+//     }),
+//     (back3 = {
+//       background: "url('images/patterns/darkness.png')",
+//       opacity: 0.4
+//     }),
+//     (back4 = {
+//       background: "url('images/patterns/cartographer.png')",
+//       opacity: 1
+//     })
+//   ];
 
-  const BACKGROUND_DIV = document.querySelector("#background-div");
-  const RANDOM_VALUE = Math.round(Math.random() * 2); // gets a value between 0 - 2
-  BACKGROUND_DIV.style.background = BACKGROUNDS[RANDOM_VALUE].background;
-  BACKGROUND_DIV.style.opacity = BACKGROUNDS[RANDOM_VALUE].opacity;
-}
+//   const BACKGROUND_DIV = document.querySelector(".bg-img");
+//   const RANDOM_VALUE = Math.round(Math.random() * 2); // gets a value between 0 - 2
+//   BACKGROUND_DIV.style.background = BACKGROUNDS[RANDOM_VALUE].background;
+//   // BACKGROUND_DIV.style.opacity = BACKGROUNDS[RANDOM_VALUE].opacity;
+// }
 
 // * Canvas Functions
 
